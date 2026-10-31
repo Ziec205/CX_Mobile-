@@ -26,4 +26,9 @@ SHOTS_DIR="$OUT" flutter drive -d emulator-5554 \
   --dart-define=LISTING_ID="$LISTING_ID" --dart-define=SELLER_TOKEN="$SELLER_TOKEN" 2>&1 | tee -a "$LOG"
 CODE=${PIPESTATUS[0]}
 kill $WATCH 2>/dev/null
+if [ "$CODE" != "0" ]; then
+  MSG=$(grep -aE "Không thấy|Exception|Error:|failed" "$LOG" | head -5 | tr '\n' ' ' | cut -c1-900)
+  echo "::error::Integration test lỗi: $MSG"
+fi
+grep -a "Đã chụp" "$LOG" | tail -3
 exit $CODE

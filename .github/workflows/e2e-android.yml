@@ -37,20 +37,28 @@ jobs:
           cache: true
       - name: MongoDB (replica set)
         run: |
-          set +e
-          docker --version
-          docker run -d --name mongo -p 27017:27017 mongo:8.0 --replSet rs0 --bind_ip_all
-          for i in $(seq 1 60); do
-            docker exec mongo mongosh --quiet --eval 'db.runCommand({ping:1}).ok' >/dev/null 2>&1 && break
-            sleep 2
-          done
-          for i in $(seq 1 10); do
-            docker exec mongo mongosh --quiet --eval 'try { rs.status().ok } catch (e) { rs.initiate({_id:"rs0",members:[{_id:0,host:"127.0.0.1:27017"}]}).ok }'
-            docker exec mongo mongosh --quiet --eval 'db.hello().isWritablePrimary' | grep -q true && { echo "MongoDB sẵn sàng"; exit 0; }
-            sleep 3
-          done
-          docker ps -a; docker logs mongo | tail -50
-          exit 1
+          set -o pipefail
+          curl -sSfL https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu2404-8.0.4.tgz -o /tmp/mongo.tgz \
+            || { echo "::error::Không tải được MongoDB"; exit 1; }
+          mkdir -p /tmp/mongo /tmp/mongo-data && tar -xzf /tmp/mongo.tgz -C /tmp/mongo --strip-components=1
+          /tmp/mongo/bin/mongod --dbpath /tmp/mongo-data --replSet rs0 --bind_ip 127.0.0.1 --port 27017 --fork --logpath /tmp/mongod.log \
+            || { echo "::error::mongod không chạy: $(tail -5 /tmp/mongod.log | tr '\n' ' ')"; exit 1; }
+          pip install --quiet pymongo
+          python3 - <<'PY'
+          import time
+          from pymongo import MongoClient
+          c = MongoClient('mongodb://127.0.0.1:27017/?directConnection=true', serverSelectionTimeoutMS=5000)
+          try:
+              c.admin.command('replSetInitiate', {'_id': 'rs0', 'members': [{'_id': 0, 'host': '127.0.0.1:27017'}]})
+          except Exception as e:
+              print('replSetInitiate:', e)
+          for _ in range(60):
+              if c.admin.command('hello').get('isWritablePrimary'):
+                  print('MongoDB sẵn sàng'); break
+              time.sleep(1)
+          else:
+              print('::error::MongoDB không thành primary'); raise SystemExit(1)
+          PY
       - name: Chạy BE
         run: |
           dotnet publish be/src/ChamXanh.Api -c Release -o /tmp/be
@@ -58,12 +66,14 @@ jobs:
           ASPNETCORE_ENVIRONMENT=Development ASPNETCORE_URLS=http://0.0.0.0:5080 \
             ConnectionStrings__Mongo="mongodb://127.0.0.1:27017/?replicaSet=rs0" Mongo__Database=chamxanh_e2e \
             PayOS__AllowSimulator=true nohup dotnet ChamXanh.Api.dll > /tmp/be.log 2>&1 &
-          for i in $(seq 1 60); do curl -sf localhost:5080/health && break; sleep 2; done
+          for i in $(seq 1 90); do curl -sf localhost:5080/health && exit 0; sleep 2; done
+          echo "::error::BE không chạy: $(tail -20 /tmp/be.log | tr '\n' ' ' | cut -c1-900)"; exit 1
       - name: Dữ liệu mẫu
         run: |
           pip install --quiet pillow reportlab
           python3 tool/e2e/make_plants.py /tmp/img
-          python3 tool/e2e/seed.py http://localhost:5080 http://10.0.2.2:5080 /tmp/img > /tmp/seed.json
+          python3 tool/e2e/seed.py http://localhost:5080 http://10.0.2.2:5080 /tmp/img > /tmp/seed.json \
+            || { echo "::error::Seed lỗi: $(tail -c 600 /tmp/seed.json)"; exit 1; }
           echo "LISTING_ID=$(python3 -c "import json;print(json.load(open('/tmp/seed.json'))['listingId'])")" >> $GITHUB_ENV
           echo "SELLER_TOKEN=$(python3 -c "import json;print(json.load(open('/tmp/seed.json'))['sellerToken'])")" >> $GITHUB_ENV
       - run: flutter pub get
