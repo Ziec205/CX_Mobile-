@@ -8,6 +8,9 @@ on:
     branches: [main]
     paths: ['lib/**', 'integration_test/**', 'tool/e2e/**', '.github/workflows/e2e-android.yml']
 
+permissions:
+  contents: write
+
 jobs:
   e2e:
     runs-on: ubuntu-24.04
@@ -109,6 +112,20 @@ jobs:
             build/shots/shots.json
             build/shots/*.pdf
             build/logs/
+      - name: Đẩy kết quả lên nhánh e2e-ket-qua
+        if: always()
+        run: |
+          rm -rf /tmp/out && mkdir -p /tmp/out
+          cp -r build/shots /tmp/out/ 2>/dev/null || true
+          cp -r build/logs /tmp/out/ 2>/dev/null || true
+          rm -rf /tmp/out/shots/_annotated
+          cd /tmp/out
+          git init -q -b e2e-ket-qua
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          echo "Kết quả E2E máy ảo Android cho commit ${GITHUB_SHA::7} ($(date -u +%FT%TZ))" > README.md
+          git add -A && git commit -qm "Kết quả E2E ${GITHUB_SHA::7}"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" e2e-ket-qua
       - name: Log BE khi lỗi
         if: failure()
         run: tail -100 /tmp/be.log
