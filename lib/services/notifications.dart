@@ -70,14 +70,15 @@ class CareNotifications {
     _ready = true;
   }
 
-  /// Xin quyền thông báo (Android 13+, iOS) và quyền hẹn giờ chính xác (Android 12+).
-  Future<bool> requestPermissions() async {
+  /// Xin quyền thông báo (Android 13+, iOS). [exact]: xin thêm quyền "Báo thức & lời nhắc" (Android 12+),
+  /// mở trang cài đặt nên chỉ gọi khi người dùng đang đặt nhắc/thử chuông.
+  Future<bool> requestPermissions({bool exact = true}) async {
     await init();
     final ios = _plugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>();
     final granted = await ios?.requestPermissions(alert: true, badge: true, sound: true) ??
         await _android?.requestNotificationsPermission() ??
         true;
-    if (_android != null && !_exact) {
+    if (exact && _android != null && !_exact) {
       await _android!.requestExactAlarmsPermission();
       _exact = await _android!.canScheduleExactNotifications() ?? false;
     }

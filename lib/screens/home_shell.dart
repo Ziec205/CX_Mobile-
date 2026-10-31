@@ -23,7 +23,7 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     // Lần đầu vào app: xin quyền thông báo để nhắc tưới kêu được.
-    WidgetsBinding.instance.addPostFrameCallback((_) => context.read<AppState>().notifications.requestPermissions());
+    WidgetsBinding.instance.addPostFrameCallback((_) => context.read<AppState>().notifications.requestPermissions(exact: false));
   }
 
   @override

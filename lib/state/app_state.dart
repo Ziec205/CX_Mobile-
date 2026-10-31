@@ -50,12 +50,10 @@ class AppState extends ChangeNotifier {
       await _signedIn();
     } on ApiException catch (e) {
       if (e.isUnauthorized) return _signedOut();
-      // Lỗi mạng/máy chủ: vẫn vào app, dữ liệu sẽ tải lại sau.
-      status = SessionStatus.signedIn;
-      notifyListeners();
+      // Lỗi máy chủ: vẫn vào app, các màn hình tự tải lại khi có mạng.
+      await _signedIn();
     } catch (_) {
-      status = SessionStatus.signedIn;
-      notifyListeners();
+      await _signedIn(); // mất mạng: dùng phiên đã lưu
     }
   }
 
@@ -125,6 +123,11 @@ class AppState extends ChangeNotifier {
 
   /// Tải vườn từ BE và đặt lại toàn bộ lịch nhắc trên máy. Gọi khi mở app, quay lại app, sau mỗi thay đổi.
   Future<void> syncGarden() async {
+    if (me == null) {
+      try {
+        me = Me.fromJson(await api.get('me') as Map<String, dynamic>);
+      } catch (_) {}
+    }
     try {
       final list = (await api.get('me/garden/plants') as List).cast<Map<String, dynamic>>().map(MyPlant.fromJson).toList();
       plants = list;
