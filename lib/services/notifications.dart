@@ -63,7 +63,7 @@ class CareNotifications {
     );
     await _plugin.initialize(
       settings: InitializationSettings(
-        android: const AndroidInitializationSettings('@mipmap/ic_launcher'),
+        android: const AndroidInitializationSettings('ic_stat_cham_xanh'), // lá trắng đơn sắc cho thanh trạng thái
         iOS: darwin,
         linux: const LinuxInitializationSettings(defaultActionName: 'Mở'),
       ),
@@ -93,6 +93,7 @@ class CareNotifications {
         android: AndroidNotificationDetails(
           'care_alarm_v1',
           'Nhắc tưới cây',
+          icon: 'ic_stat_cham_xanh',
           channelDescription: 'Báo thức nhắc tưới, bón phân cho cây trong vườn',
           importance: Importance.max,
           priority: Priority.max,

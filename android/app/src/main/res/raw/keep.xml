@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Giữ biểu tượng thông báo (được gọi bằng tên từ Dart) khi build release thu gọn tài nguyên. -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@drawable/ic_stat_cham_xanh" />

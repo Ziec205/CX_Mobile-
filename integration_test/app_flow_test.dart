@@ -424,6 +424,9 @@ void main() {
     }
     navigatorKey.currentState!.pop();
     await settle(t);
+    // Màn hình thấp (vd Pixel 6) phải cuộn mới thấy nút Đăng xuất.
+    await t.dragUntilVisible(find.text('Đăng xuất'), find.widgetWithText(ListView, 'Nâng cấp gói'), const Offset(0, -300));
+    await settle(t);
     await t.tap(find.text('Đăng xuất'));
     await waitFor(t, find.text('Đăng xuất?'));
     await shot(t, '25-dang-xuat', 'Đăng xuất', 'Lịch nhắc trên máy sẽ tắt; ảnh cây vẫn giữ trên điện thoại.', [
