@@ -62,7 +62,8 @@ Finder field(String label) => find.widgetWithText(TextFormField, label);
 Future<void> shot(WidgetTester t, String name, String title, String desc, List<Mark> marks) async {
   await settle(t, 700);
   final ro = _boundary.currentContext!.findRenderObject()! as RenderRepaintBoundary;
-  final dpr = t.view.devicePixelRatio;
+  // Ảnh đủ nét cho PDF A4 mà nhẹ khi gửi về máy chạy test.
+  final dpr = min(t.view.devicePixelRatio, 2.0);
   final png = await t.runAsync(() async {
     final img = await ro.toImage(pixelRatio: dpr);
     final data = await img.toByteData(format: ui.ImageByteFormat.png);
@@ -77,7 +78,7 @@ Future<void> shot(WidgetTester t, String name, String title, String desc, List<M
     final r = t.getRect(f.first);
     rects.add({'label': label, 'x': r.left, 'y': r.top, 'w': r.width, 'h': r.height});
   }
-  final size = t.view.physicalSize / dpr;
+  final size = t.view.physicalSize / t.view.devicePixelRatio;
   _shots.add({'name': name, 'title': title, 'desc': desc, 'dpr': dpr, 'w': size.width, 'h': size.height, 'marks': rects, 'png': base64Encode(png!)});
   debugPrint('Đã chụp $name (${rects.length} chú thích)');
 }

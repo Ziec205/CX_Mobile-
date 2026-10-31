@@ -11,7 +11,7 @@ on:
 jobs:
   e2e:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 80
     steps:
       - uses: actions/checkout@v4
       - uses: actions/checkout@v4
@@ -78,6 +78,7 @@ jobs:
           echo "SELLER_TOKEN=$(python3 -c "import json;print(json.load(open('/tmp/seed.json'))['sellerToken'])")" >> $GITHUB_ENV
       - run: flutter pub get
       - name: Máy ảo Android + integration test
+        timeout-minutes: 45
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 31
@@ -86,12 +87,19 @@ jobs:
           profile: pixel_6
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot
-          script: SHOTS_DIR=$PWD/build/shots bash tool/e2e/run_android.sh
+          script: SHOTS_DIR=$PWD/build/shots bash tool/e2e/run_android.sh; adb logcat -d -t 3000 > $PWD/build/logcat.txt 2>/dev/null || true
       - name: Tạo PDF hướng dẫn
         if: always()
         run: |
           python3 tool/e2e/build_pdf.py build/shots build/shots/Huong-dan-app-Cham-Xanh.pdf assets/fonts \
             ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png "máy ảo Android (Pixel 6, Android 12)" || true
+      - name: Gom log
+        if: always()
+        run: |
+          mkdir -p build/logs
+          cp /tmp/drive.log /tmp/be.log /tmp/mongod.log build/logs/ 2>/dev/null || true
+          cp build/logcat.txt build/logs/ 2>/dev/null || true
+          grep -aE "Đã chụp|Không thấy|Exception|All tests|Test failed" /tmp/drive.log | tail -20 | while read -r l; do echo "::notice::$l"; done || true
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -100,6 +108,7 @@ jobs:
             build/shots/*.png
             build/shots/shots.json
             build/shots/*.pdf
+            build/logs/
       - name: Log BE khi lỗi
         if: failure()
         run: tail -100 /tmp/be.log
