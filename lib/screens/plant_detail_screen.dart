@@ -35,8 +35,10 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
     final app = context.read<AppState>();
     final p = _plant(app);
     if (p == null) return;
-    final list = await app.photos.list(p.id, p.name);
-    if (mounted) setState(() => _photos = list);
+    try {
+      final list = await app.photos.list(p.id, p.name);
+      if (mounted) setState(() => _photos = list);
+    } catch (_) {}
   }
 
   Future<void> _addPhoto(ImageSource source) async {
@@ -178,7 +180,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
           await _loadPhotos();
         },
         child: ListView(padding: const EdgeInsets.only(bottom: 40), children: [
-          _PhotoStrip(photos: _photos, fallbackUrl: p.speciesImageUrl, adding: _adding, onAdd: _choosePhotoSource, onChanged: _loadPhotos),
+          _PhotoStrip(photos: _photos, fallbackUrl: p.speciesImageUrl == null ? null : app.api.mediaUrl(p.speciesImageUrl!), adding: _adding, onAdd: _choosePhotoSource, onChanged: _loadPhotos),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

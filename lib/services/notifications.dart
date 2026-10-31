@@ -62,7 +62,11 @@ class CareNotifications {
       ],
     );
     await _plugin.initialize(
-      settings: InitializationSettings(android: const AndroidInitializationSettings('@mipmap/ic_launcher'), iOS: darwin),
+      settings: InitializationSettings(
+        android: const AndroidInitializationSettings('@mipmap/ic_launcher'),
+        iOS: darwin,
+        linux: const LinuxInitializationSettings(defaultActionName: 'Mở'),
+      ),
       onDidReceiveNotificationResponse: background ? null : handleAction,
       onDidReceiveBackgroundNotificationResponse: onBackgroundNotificationAction,
     );
@@ -116,6 +120,9 @@ class CareNotifications {
         ),
       );
 
+  /// Chỉ Android/iOS hẹn giờ được; desktop (dùng khi chạy thử) bỏ qua.
+  bool get _canSchedule => defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
+
   AndroidScheduleMode get _mode => _exact ? AndroidScheduleMode.alarmClock : AndroidScheduleMode.inexactAllowWhileIdle;
 
   static String titleFor(CareReminder r, MyPlant p) => switch (r.kind) {
@@ -148,6 +155,7 @@ class CareNotifications {
         'title': titleFor(s.reminder, s.plant),
         'body': _body(s),
       });
+      if (!_canSchedule) continue;
       await _plugin.zonedSchedule(
         id: id,
         title: titleFor(s.reminder, s.plant),
@@ -187,6 +195,7 @@ class CareNotifications {
 
   Future<void> snooze(Map<String, dynamic>? data, {Duration after = const Duration(minutes: 10)}) async {
     await init();
+    if (!_canSchedule) return;
     final id = _snoozeBase + DateTime.now().millisecondsSinceEpoch % 90000;
     await _plugin.zonedSchedule(
       id: id,
@@ -225,6 +234,7 @@ class CareNotifications {
 
   Future<int> pendingCount() async {
     await init();
+    if (!_canSchedule) return 0;
     return (await _plugin.pendingNotificationRequests()).length;
   }
 }

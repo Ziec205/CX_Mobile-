@@ -39,6 +39,8 @@ flutter analyze
 flutter test
 ```
 
+Kiểm thử đầu-cuối trên máy ảo Android với BE thật + tạo PDF hướng dẫn có mũi tên đỏ: xem [tool/e2e/README.md](tool/e2e/README.md) (workflow `e2e-android.yml`).
+
 GitHub Actions (`.github/workflows/build.yml`): analyze + test → APK Android (artifact `cham-xanh-android-apk`) và bản iOS chưa ký trên macOS (artifact `cham-xanh-ios-unsigned`). Chạy tay được với `API_BASE` khác (Actions → Build → Run workflow).
 
 ## Cấu trúc

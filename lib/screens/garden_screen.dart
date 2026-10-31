@@ -106,8 +106,12 @@ class _PlantCardState extends State<PlantCard> {
   }
 
   Future<void> _loadCover() async {
-    final files = await context.read<AppState>().photos.list(widget.plant.id, widget.plant.name);
-    if (mounted) setState(() => _cover = files.isEmpty ? null : files.first);
+    try {
+      final files = await context.read<AppState>().photos.list(widget.plant.id, widget.plant.name);
+      if (mounted) setState(() => _cover = files.isEmpty ? null : files.first);
+    } catch (_) {
+      // Không đọc được thư mục ảnh: dùng ảnh minh họa của loài.
+    }
   }
 
   @override
@@ -127,7 +131,7 @@ class _PlantCardState extends State<PlantCard> {
           child: Padding(
             padding: const EdgeInsets.all(12),
             child: Row(children: [
-              PlantImage(file: _cover, url: p.speciesImageUrl, size: 84),
+              PlantImage(file: _cover, url: p.speciesImageUrl == null ? null : context.read<AppState>().api.mediaUrl(p.speciesImageUrl!), size: 84),
               const SizedBox(width: 14),
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

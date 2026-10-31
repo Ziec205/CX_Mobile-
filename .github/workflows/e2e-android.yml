@@ -1,0 +1,84 @@
+name: E2E Android (máy ảo)
+
+# Dựng BE thật (.NET + MongoDB) với dữ liệu mẫu, bật máy ảo Android, chạy integration test đi qua mọi màn hình,
+# chụp ảnh và tạo tài liệu PDF hướng dẫn có mũi tên đỏ chỉ từng nút.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['lib/**', 'integration_test/**', 'tool/e2e/**', '.github/workflows/e2e-android.yml']
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: Ziec205/CX_BE
+          path: be
+      - name: Bật KVM cho máy ảo
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.35.7"
+          channel: stable
+          cache: true
+      - name: MongoDB (replica set)
+        run: |
+          docker run -d --name mongo -p 27017:27017 mongo:8.0 --replSet rs0 --bind_ip_all
+          for i in $(seq 1 30); do docker exec mongo mongosh --quiet --eval 'db.runCommand({ping:1}).ok' && break; sleep 2; done
+          docker exec mongo mongosh --quiet --eval 'rs.initiate({_id:"rs0",members:[{_id:0,host:"127.0.0.1:27017"}]})'
+      - name: Chạy BE
+        run: |
+          dotnet publish be/src/ChamXanh.Api -c Release -o /tmp/be
+          cd /tmp/be
+          ASPNETCORE_ENVIRONMENT=Development ASPNETCORE_URLS=http://0.0.0.0:5080 \
+            ConnectionStrings__Mongo="mongodb://127.0.0.1:27017/?replicaSet=rs0" Mongo__Database=chamxanh_e2e \
+            PayOS__AllowSimulator=true nohup dotnet ChamXanh.Api.dll > /tmp/be.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf localhost:5080/health && break; sleep 2; done
+      - name: Dữ liệu mẫu
+        run: |
+          pip install --quiet pillow reportlab
+          python3 tool/e2e/make_plants.py /tmp/img
+          python3 tool/e2e/seed.py http://localhost:5080 http://10.0.2.2:5080 /tmp/img > /tmp/seed.json
+          echo "LISTING_ID=$(python3 -c "import json;print(json.load(open('/tmp/seed.json'))['listingId'])")" >> $GITHUB_ENV
+          echo "SELLER_TOKEN=$(python3 -c "import json;print(json.load(open('/tmp/seed.json'))['sellerToken'])")" >> $GITHUB_ENV
+      - run: flutter pub get
+      - name: Máy ảo Android + integration test
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 31
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot
+          script: SHOTS_DIR=$PWD/build/shots bash tool/e2e/run_android.sh
+      - name: Tạo PDF hướng dẫn
+        if: always()
+        run: |
+          python3 tool/e2e/build_pdf.py build/shots build/shots/Huong-dan-app-Cham-Xanh.pdf assets/fonts \
+            ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png "máy ảo Android (Pixel 6, Android 12)" || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-android-anh-chup-va-pdf
+          path: |
+            build/shots/*.png
+            build/shots/shots.json
+            build/shots/*.pdf
+      - name: Log BE khi lỗi
+        if: failure()
+        run: tail -100 /tmp/be.log
