@@ -5,6 +5,7 @@ App Flutter (Android + iOS) cho Chạm Xanh, dùng chung tài khoản và dữ l
 - BE (.NET): https://github.com/Ziec205/CX_BE
 - Web (Next.js): https://github.com/Ziec205/CX_FE
 - Kế hoạch: [PLAN.md](PLAN.md)
+- **Hướng dẫn sử dụng (PDF, ảnh chụp từ máy ảo Android, mũi tên đỏ chỉ từng nút):** [docs/Huong-dan-app-Cham-Xanh.pdf](docs/Huong-dan-app-Cham-Xanh.pdf)
 
 ## Tính năng
 

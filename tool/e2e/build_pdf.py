@@ -150,14 +150,16 @@ def main():
     c.setFont('Body', 13)
     c.drawCentredString(w / 2, h - 145 * mm, 'Android & iOS · Hồ sơ vườn · Nhắc tưới · Cộng đồng · Tin nhắn · Nâng cấp gói')
     y = h - 175 * mm
-    for line in [
+    for para in [
         f'Ảnh chụp từ app thật chạy trên {SOURCE}, kết nối máy chủ Chạm Xanh với dữ liệu mẫu.',
         'Mũi tên và số màu đỏ chỉ vào từng nút; phần chú thích bên phải giải thích chức năng.',
         f'Ngày tạo: {datetime.date.today().strftime("%d/%m/%Y")}',
     ]:
         c.setFont('Body', 11)
-        c.drawCentredString(w / 2, y, line)
-        y -= 16
+        for line in simpleSplit(para, 'Body', 11, w - 50 * mm):
+            c.drawCentredString(w / 2, y, line)
+            y -= 16
+        y -= 4
     c.showPage()
 
     # ----- Mục lục -----
@@ -233,11 +235,15 @@ def main():
         y = wrap(c, 'Đến giờ, thông báo hiện trên thanh trạng thái và đổ chuông kiểu báo thức. Bấm "Đã tưới" để tắt, '
                     '"Nhắc lại 10 phút" để được nhắc lại sau 10 phút. Ảnh chụp từ máy ảo khi bấm "Thử chuông".',
                  15 * mm, h - 38 * mm, w - 30 * mm, color=MUTED)
-        im = Image.open(shade)
+        im = Image.open(shade).convert('RGB')
+        # Chỉ giữ phần trên (thanh trạng thái + thông báo nhắc tưới), bỏ thông báo hệ thống của máy ảo.
+        im = im.crop((0, 0, im.width, int(im.height * 0.40)))
+        shade = os.path.join(SHOTS, '_annotated', 'shade_crop.png')
+        im.save(shade)
         sw, sh = im.size
-        ih2 = y - 20 * mm
-        iw2 = ih2 * sw / sh
-        c.drawImage(ImageReader(shade), (w - iw2) / 2, 18 * mm, iw2, ih2)
+        iw2 = w * 0.62
+        ih2 = iw2 * sh / sw
+        c.drawImage(ImageReader(shade), (w - iw2) / 2, y - 8 * mm - ih2, iw2, ih2)
         c.showPage()
     c.save()
     print(f'Đã tạo {OUT}: {page} trang, {len(shots)} màn hình')
