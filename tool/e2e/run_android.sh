@@ -18,16 +18,19 @@ LOG=/tmp/drive.log
         ;;
     esac
   done
-) &
+) > /tmp/watch.log 2>&1 &
 WATCH=$!
 SHOTS_DIR="$OUT" flutter drive -d emulator-5554 \
   --driver=test_driver/integration_test.dart --target=integration_test/app_flow_test.dart \
   --dart-define=API_BASE=http://10.0.2.2:5080 \
   --dart-define=LISTING_ID="$LISTING_ID" --dart-define=SELLER_TOKEN="$SELLER_TOKEN" 2>&1 | tee -a "$LOG"
 CODE=${PIPESTATUS[0]}
+# Dừng hẳn tiến trình theo dõi (kể cả tail -F) để bước CI kết thúc được.
 kill $WATCH 2>/dev/null
+pkill -f "tail -F $LOG" 2>/dev/null || true
+cat /tmp/watch.log 2>/dev/null
 if [ "$CODE" != "0" ]; then
-  MSG=$(grep -aE "Không thấy|Exception|Error:|failed" "$LOG" | head -5 | tr '\n' ' ' | cut -c1-900)
+  MSG=$(grep -aE "Không thấy|Exception|Error:|Expected|Đang hiện" "$LOG" | grep -v "Test failed" | head -6 | tr '\n' ' ' | cut -c1-1500)
   echo "::error::Integration test lỗi: $MSG"
 fi
 grep -a "Đã chụp" "$LOG" | tail -3
