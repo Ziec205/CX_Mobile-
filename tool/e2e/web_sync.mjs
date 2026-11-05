@@ -40,10 +40,12 @@ function check(ok, what) { checks.push({ ok, what }); console.log(ok ? '  ✓' :
 
 try {
   await page.goto(`${web}/dang-nhap?next=/vuon-cua-toi`);
-  await page.getByPlaceholder('Tên đăng nhập').first().fill(user);
-  await page.getByPlaceholder('Mật khẩu').first().fill(pass);
-  await page.getByRole('button', { name: 'Đăng nhập' }).last().click();
-  await page.waitForURL(/vuon-cua-toi/, { timeout: 30000 }).catch(() => page.goto(`${web}/vuon-cua-toi`));
+  const form = page.locator('form').filter({ has: page.getByPlaceholder('Mật khẩu') }).first();
+  await form.getByPlaceholder('Tên đăng nhập').fill(user);
+  await form.getByPlaceholder('Mật khẩu').fill(pass);
+  await form.getByPlaceholder('Mật khẩu').press('Enter');
+  await page.waitForURL((u) => !u.pathname.startsWith('/dang-nhap'), { timeout: 30000 });
+  await page.goto(`${web}/vuon-cua-toi`);
   await page.getByText('Trầu bà góc phòng khách').first().waitFor({ timeout: 30000 });
 
   check(await page.getByText('Trầu bà góc phòng khách').count() > 0, 'Web thấy cây tạo trên app (Trầu bà góc phòng khách)');
