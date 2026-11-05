@@ -63,21 +63,35 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Form(
                 key: _form,
                 child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                  Row(children: [
-                    Container(
-                      width: 52,
-                      height: 52,
-                      decoration: BoxDecoration(color: CxColors.emerald700, borderRadius: BorderRadius.circular(16)),
-                      child: const Icon(Icons.eco_rounded, color: CxColors.wood400, size: 30),
+                  Container(
+                    height: 150,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(colors: [CxColors.emerald700, CxColors.emerald900], begin: Alignment.topLeft, end: Alignment.bottomRight),
+                      borderRadius: BorderRadius.circular(28),
                     ),
-                    const SizedBox(width: 12),
-                    Text('Chạm Xanh', style: t.headlineMedium?.copyWith(color: CxColors.emerald800)),
-                  ]),
+                    child: Stack(children: [
+                      const Positioned(right: -18, bottom: -24, child: Icon(Icons.eco_rounded, size: 150, color: Color(0x2619582F))),
+                      const Positioned(right: 30, top: 18, child: Icon(Icons.local_florist_rounded, size: 44, color: Color(0x55F2C230))),
+                      Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.end, children: [
+                          Container(
+                            width: 46,
+                            height: 46,
+                            decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(14)),
+                            child: const Icon(Icons.eco_rounded, color: CxColors.wood400, size: 28),
+                          ),
+                          const SizedBox(height: 10),
+                          Text('Chạm Xanh', style: t.headlineMedium?.copyWith(color: Colors.white)),
+                        ]),
+                      ),
+                    ]),
+                  ),
                   const SizedBox(height: 28),
-                  Text(_register ? 'Tạo tài khoản' : 'Chào mừng trở lại', style: t.headlineLarge),
+                  Text(_register ? 'Tạo tài khoản miễn phí' : 'Chào mừng trở lại 👋', style: t.headlineLarge),
                   const SizedBox(height: 8),
                   Text(
-                    _register ? 'Lưu hồ sơ vườn, đặt nhắc tưới và trò chuyện cùng cộng đồng.' : 'Đăng nhập bằng tài khoản Chạm Xanh, dùng chung với web.',
+                    _register ? 'Chỉ cần tên đăng nhập và mật khẩu. Lưu vườn, đặt nhắc tưới và trò chuyện cùng cộng đồng.' : 'Vườn của bạn đang chờ. Tài khoản dùng chung với web Chạm Xanh.',
                     style: t.bodyLarge?.copyWith(color: CxColors.stone600),
                   ),
                   const SizedBox(height: 28),

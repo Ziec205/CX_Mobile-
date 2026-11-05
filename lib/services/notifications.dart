@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest_all.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
+import '../api/api_client.dart';
 import '../api/models.dart';
 import '../theme.dart';
 import 'reminder_schedule.dart';
@@ -188,6 +189,12 @@ class CareNotifications {
         if (data?['reminderId'] != null) {
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString('care.done.${data!['reminderId']}', DateTime.now().toIso8601String());
+          // Báo máy chủ để web và app cùng thấy "Đã tưới" (chạy được cả khi app đang tắt).
+          try {
+            final api = ApiClient();
+            await api.load();
+            if (api.hasSession) await api.post('me/garden/plants/${data['plantId']}/reminders/${data['reminderId']}/done');
+          } catch (_) {}
         }
       default:
         tapped.value = data?['plantId'] as String?;

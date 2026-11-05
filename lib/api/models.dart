@@ -38,11 +38,11 @@ T _enum<T extends Enum>(List<T> values, Object? v, T fallback) =>
 String enumApi(Enum e) => e.name[0].toUpperCase() + e.name.substring(1);
 
 const reminderKindLabel = {
-  ReminderKind.watering: 'Tưới nước',
+  ReminderKind.watering: 'Tưới cây', // cùng tên với web và email nhắc của BE
   ReminderKind.fertilizing: 'Bón phân',
   ReminderKind.pruning: 'Cắt tỉa',
   ReminderKind.repotting: 'Thay chậu',
-  ReminderKind.other: 'Việc khác',
+  ReminderKind.other: 'Chăm cây',
 };
 const reminderRepeatUnit = {
   ReminderRepeat.none: 'Một lần',
@@ -68,6 +68,7 @@ class CareReminder {
     required this.enabled,
     this.note,
     this.nextAt,
+    this.lastDoneAt,
   });
   final String id;
   final String plantId;
@@ -78,6 +79,8 @@ class CareReminder {
   final int interval;
   final DateTime? nextAt; // UTC
   final bool enabled;
+  /// Lần bấm "Đã làm" gần nhất, trên app hoặc web (UTC).
+  final DateTime? lastDoneAt;
 
   factory CareReminder.fromJson(Map<String, dynamic> j) => CareReminder(
         id: j['id'] as String,
@@ -89,6 +92,7 @@ class CareReminder {
         interval: (j['interval'] as num?)?.toInt() ?? 1,
         nextAt: parseUtc(j['nextAt']),
         enabled: j['enabled'] as bool? ?? true,
+        lastDoneAt: parseUtc(j['lastDoneAt']),
       );
 }
 
@@ -117,6 +121,11 @@ class MyPlant {
   final DateTime createdAt;
   final bool locked;
   final List<CareReminder> reminders;
+
+  MyPlant withReminders(List<CareReminder> list) => MyPlant(
+        id: id, name: name, reminders: list, locked: locked, createdAt: createdAt, speciesId: speciesId, speciesName: speciesName,
+        speciesImageUrl: speciesImageUrl, location: location, acquiredAt: acquiredAt, note: note,
+      );
 
   factory MyPlant.fromJson(Map<String, dynamic> j) => MyPlant(
         id: j['id'] as String,

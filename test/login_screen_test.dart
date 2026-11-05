@@ -11,7 +11,7 @@ void main() {
   testWidgets('đăng ký kiểm tra tên đăng nhập và mật khẩu nhập lại', (tester) async {
     final app = AppState(api: ApiClient(client: MockClient((_) async => http.Response('', 500)), store: MemoryTokenStore(), baseUrl: 'https://api.test'));
     await tester.pumpWidget(ChangeNotifierProvider.value(value: app, child: const MaterialApp(home: LoginScreen())));
-    expect(find.text('Chào mừng trở lại'), findsOneWidget);
+    expect(find.text('Chào mừng trở lại 👋'), findsOneWidget);
 
     await tester.tap(find.text('Chưa có tài khoản? Đăng ký'));
     await tester.pump();

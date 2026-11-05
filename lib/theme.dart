@@ -33,35 +33,40 @@ class CxColors {
   static const danger = Color(0xFFB42318);
 }
 
-/// Font đóng gói sẵn trong app (assets/fonts), không cần mạng: Be Vietnam Pro cho chữ thường,
-/// Bricolage Grotesque (font biến thiên) cho tiêu đề — giống web.
+/// Font đóng gói sẵn (assets/fonts, giấy phép OFL), không cần mạng:
+/// - Nunito: tiêu đề — nét tròn, thân thiện mà vẫn lịch sự.
+/// - Be Vietnam Pro: nội dung — do nhóm thiết kế Việt Nam làm, dấu tiếng Việt rõ ở cỡ nhỏ.
 const fontBody = 'BeVietnamPro';
-const fontDisplay = 'BricolageGrotesque';
+const fontDisplay = 'Nunito';
 
-TextStyle _display(double size, double weight) => TextStyle(
+TextStyle _display(double size, FontWeight weight) => TextStyle(
       fontFamily: fontDisplay,
       fontSize: size,
-      fontWeight: weight >= 800 ? FontWeight.w800 : FontWeight.w700,
-      fontVariations: [FontVariation('wght', weight), const FontVariation('opsz', 36)],
-      letterSpacing: -0.4,
-      height: 1.15,
+      fontWeight: weight,
+      letterSpacing: -0.2,
+      height: 1.2,
       color: CxColors.stone900,
     );
 
 TextTheme _textTheme() {
   final body = ThemeData.light().textTheme.apply(fontFamily: fontBody, bodyColor: CxColors.stone900, displayColor: CxColors.stone900);
   return body.copyWith(
-    headlineLarge: _display(30, 800),
-    headlineMedium: _display(26, 800),
-    headlineSmall: _display(22, 700),
-    titleLarge: _display(20, 700),
-    titleMedium: body.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: CxColors.stone900),
-    bodyLarge: body.bodyLarge?.copyWith(fontSize: 16, height: 1.5, color: CxColors.stone900),
-    bodyMedium: body.bodyMedium?.copyWith(fontSize: 15, height: 1.5, color: CxColors.stone700),
-    bodySmall: body.bodySmall?.copyWith(fontSize: 13, color: CxColors.stone500),
-    labelLarge: body.labelLarge?.copyWith(fontWeight: FontWeight.w600, fontSize: 15),
+    displaySmall: _display(34, FontWeight.w800),
+    headlineLarge: _display(30, FontWeight.w800),
+    headlineMedium: _display(26, FontWeight.w800),
+    headlineSmall: _display(22, FontWeight.w800),
+    titleLarge: _display(20, FontWeight.w800),
+    titleMedium: _display(17, FontWeight.w700),
+    titleSmall: body.titleSmall?.copyWith(fontSize: 15, fontWeight: FontWeight.w600, color: CxColors.stone900),
+    bodyLarge: body.bodyLarge?.copyWith(fontSize: 17, height: 1.5, color: CxColors.stone900),
+    bodyMedium: body.bodyMedium?.copyWith(fontSize: 15.5, height: 1.5, color: CxColors.stone700),
+    bodySmall: body.bodySmall?.copyWith(fontSize: 13.5, height: 1.4, color: CxColors.stone500),
+    labelLarge: _display(16, FontWeight.w800).copyWith(letterSpacing: 0.1),
   );
 }
+
+/// Bóng đổ mềm dùng chung cho thẻ nổi.
+const softShadow = [BoxShadow(color: Color(0x14102E1B), blurRadius: 18, offset: Offset(0, 6))];
 
 ThemeData buildTheme() {
   final scheme = ColorScheme.fromSeed(
@@ -95,14 +100,14 @@ ThemeData buildTheme() {
       color: Colors.white,
       elevation: 0,
       margin: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: const BorderSide(color: CxColors.stone200)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: const BorderSide(color: CxColors.stone100)),
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         backgroundColor: CxColors.emerald700,
         foregroundColor: Colors.white,
-        minimumSize: const Size(48, 48),
-        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
+        minimumSize: const Size(52, 52),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
         shape: shape,
         textStyle: text.labelLarge,
       ),
@@ -110,7 +115,7 @@ ThemeData buildTheme() {
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         foregroundColor: CxColors.emerald800,
-        minimumSize: const Size(48, 48),
+        minimumSize: const Size(52, 52),
         side: const BorderSide(color: CxColors.stone300),
         shape: shape,
         textStyle: text.labelLarge,
@@ -120,15 +125,20 @@ ThemeData buildTheme() {
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: Colors.white,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: CxColors.stone300)),
-      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: CxColors.stone300)),
-      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: CxColors.emerald600, width: 2)),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: CxColors.stone300)),
+      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: CxColors.stone300)),
+      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: CxColors.emerald600, width: 2)),
     ),
     navigationBarTheme: NavigationBarThemeData(
       backgroundColor: Colors.white,
+      height: 72,
+      elevation: 3,
+      shadowColor: const Color(0x22000000),
       indicatorColor: CxColors.emerald100,
-      labelTextStyle: WidgetStatePropertyAll(text.bodySmall?.copyWith(fontWeight: FontWeight.w600, color: CxColors.stone700)),
+      labelTextStyle: WidgetStateProperty.resolveWith((s) => text.bodySmall?.copyWith(
+          fontSize: 12.5, fontWeight: s.contains(WidgetState.selected) ? FontWeight.w700 : FontWeight.w500,
+          color: s.contains(WidgetState.selected) ? CxColors.emerald800 : CxColors.stone600)),
       iconTheme: WidgetStateProperty.resolveWith((s) =>
           IconThemeData(color: s.contains(WidgetState.selected) ? CxColors.emerald800 : CxColors.stone500)),
     ),
@@ -139,7 +149,28 @@ ThemeData buildTheme() {
       shape: shape,
       labelStyle: text.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
     ),
-    snackBarTheme: const SnackBarThemeData(behavior: SnackBarBehavior.floating),
+    snackBarTheme: SnackBarThemeData(
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: CxColors.emerald900,
+      contentTextStyle: text.bodyMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.w600),
+      actionTextColor: CxColors.wood400,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: CxColors.emerald700,
+      foregroundColor: Colors.white,
+      extendedTextStyle: text.labelLarge,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+    ),
+    bottomSheetTheme: const BottomSheetThemeData(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(28))),
+    ),
+    dialogTheme: DialogThemeData(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+      titleTextStyle: text.titleLarge,
+    ),
     dividerTheme: const DividerThemeData(color: CxColors.stone100, space: 1),
   );
 }

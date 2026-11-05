@@ -5,9 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../api/models.dart';
-import '../services/notifications.dart';
 import '../state/app_state.dart';
 import '../theme.dart';
+import '../widgets/care_actions.dart';
 import '../widgets/common.dart';
 import 'plant_form_screen.dart';
 import 'reminder_sheet.dart';
@@ -254,16 +254,21 @@ class _ReminderTile extends StatelessWidget {
         child: Icon(r.kind == ReminderKind.watering ? Icons.water_drop_rounded : Icons.spa_rounded, color: Colors.white, size: 20),
       ),
       title: Text('${reminderKindLabel[r.kind]} · ${repeatText(r.repeat, r.interval)}', style: t.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
-      subtitle: FutureBuilder<DateTime?>(
-        future: CareNotifications.lastDone(r.id),
-        builder: (context, snap) => Text([
-          r.enabled && r.nextAt != null ? 'Lần tới: ${vnDateTime(r.nextAt!)}' : 'Đang tắt',
-          if (snap.data != null) 'Đã làm: ${timeAgo(snap.data!)}',
-          if (r.note?.isNotEmpty == true) r.note!,
-        ].join('\n')),
-      ),
-      isThreeLine: r.note?.isNotEmpty == true,
-      trailing: Switch(value: r.enabled, activeTrackColor: CxColors.water500, onChanged: plant.locked ? null : (_) => onToggle()),
+      subtitle: Text([
+        r.enabled && r.nextAt != null ? 'Lần tới: ${vnDateTime(r.nextAt!)}' : 'Đang tắt',
+        if (r.lastDoneAt != null) '✓ Đã làm ${timeAgo(r.lastDoneAt!.toLocal())}',
+        if (r.note?.isNotEmpty == true) r.note!,
+      ].join('\n')),
+      isThreeLine: r.note?.isNotEmpty == true || r.lastDoneAt != null,
+      trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+        if (r.enabled && !plant.locked)
+          IconButton(
+            tooltip: r.kind == ReminderKind.watering ? 'Đã tưới' : 'Đã làm',
+            icon: const Icon(Icons.check_circle_outline_rounded, color: CxColors.water500, size: 30),
+            onPressed: () => completeCare(context, plant, r),
+          ),
+        Switch(value: r.enabled, activeTrackColor: CxColors.water500, onChanged: plant.locked ? null : (_) => onToggle()),
+      ]),
     );
   }
 }

@@ -26,8 +26,9 @@ pdfmetrics.registerFont(TTFont('Body-SB', f'{FONTS}/BeVietnamPro-SemiBold.ttf'))
 PIL_BOLD = f'{FONTS}/BeVietnamPro-Bold.ttf'
 
 SECTIONS = [
-    ('01', 'Bắt đầu'), ('03', 'Hồ sơ vườn'), ('07', 'Ảnh cây và lời nhắc'), ('12', 'Nhắc tưới'),
-    ('13', 'Cộng đồng'), ('16', 'Khám phá'), ('18', 'Tin nhắn'), ('21', 'Tài khoản và nâng cấp gói'),
+    ('00', 'Bắt đầu'), ('04', 'Hôm nay và thêm cây'), ('07', 'Vườn, ảnh cây và lời nhắc'), ('12', 'Chăm cây mỗi ngày'),
+    ('13w', 'Đồng bộ với web'), ('14', 'App nhận thay đổi từ web'), ('16', 'Lịch nhắc'), ('17', 'Cộng đồng'),
+    ('20', 'Khám phá'), ('22', 'Tin nhắn'), ('25', 'Tài khoản và nâng cấp gói'),
 ]
 
 
@@ -127,7 +128,13 @@ def wrap(c, text, x, y, width, font='Body', size=11, leading=15, color=INK):
 
 
 def main():
-    shots = sorted(json.load(open(os.path.join(SHOTS, 'shots.json'))), key=lambda s: s['name'])
+    shots = json.load(open(os.path.join(SHOTS, 'shots.json')))
+    web = os.path.join(SHOTS, 'web_shots.json')
+    if os.path.exists(web):
+        shots += json.load(open(web))
+    shots = sorted(shots, key=lambda s: s['name'])
+    checks_file = os.path.join(SHOTS, 'web_checks.json')
+    checks = json.load(open(checks_file)) if os.path.exists(checks_file) else []
     tmp = os.path.join(SHOTS, '_annotated')
     os.makedirs(tmp, exist_ok=True)
     c = canvas.Canvas(OUT, pagesize=A4)
@@ -169,22 +176,22 @@ def main():
     c.setFont('Body-B', 22)
     c.drawString(15 * mm, h - 32 * mm, 'Mục lục')
     y = h - 45 * mm
-    sec_idx = 0
+    printed = set()
     for n, s in enumerate(shots):
-        prefix = s['name'][:2]
-        if sec_idx < len(SECTIONS) and prefix >= SECTIONS[sec_idx][0]:
-            y -= 4
+        sec = max((i for i, (code, _) in enumerate(SECTIONS) if s['name'] >= code), default=None)
+        if sec is not None and sec not in printed:
+            y -= 3
             c.setFont('Body-B', 12)
             c.setFillColor(EMERALD)
-            c.drawString(15 * mm, y, SECTIONS[sec_idx][1])
-            y -= 16
-            sec_idx += 1
+            c.drawString(15 * mm, y, SECTIONS[sec][1])
+            y -= 14
+            printed.add(sec)
         c.setFont('Body', 11)
         c.setFillColor(INK)
         c.drawString(22 * mm, y, f'{n + 1}. {s["title"]}')
         c.setFillColor(MUTED)
         c.drawRightString(w - 15 * mm, y, f'trang {n + 3}')
-        y -= 15
+        y -= 13
     c.showPage()
 
     # ----- Từng màn hình -----
@@ -244,6 +251,22 @@ def main():
         iw2 = w * 0.62
         ih2 = iw2 * sh / sw
         c.drawImage(ImageReader(shade), (w - iw2) / 2, y - 8 * mm - ih2, iw2, ih2)
+        c.showPage()
+    if checks:
+        page += 1
+        header(c, 'Kết quả kiểm tra đồng bộ', page)
+        c.setFillColor(INK)
+        c.setFont('Body-B', 20)
+        c.drawString(15 * mm, h - 30 * mm, 'Kết quả kiểm tra đồng bộ app ↔ web')
+        y = wrap(c, 'Kiểm tra tự động: app và trình duyệt cùng đăng nhập một tài khoản trên cùng máy chủ; '
+                    'thay đổi ở nơi này phải hiện ở nơi kia.', 15 * mm, h - 38 * mm, w - 30 * mm, color=MUTED) - 6 * mm
+        for ch in checks:
+            c.setFillColor(HexColor('#1f6b3a') if ch['ok'] else HexColor('#dc2626'))
+            c.setFont('Body-B', 13)
+            c.drawString(18 * mm, y, '✓' if ch['ok'] else '✗')
+            y = wrap(c, ch['what'], 26 * mm, y, w - 45 * mm, font='Body-SB', size=11.5, leading=15) - 6
+        for line in ['App → web: cây, lời nhắc, lần “Đã tưới” bấm trên app.', 'Web → app: “Đã làm” và cây mới thêm trên web (ảnh 14, 15).']:
+            y = wrap(c, '• ' + line, 18 * mm, y - 4, w - 36 * mm, size=11, color=MUTED)
         c.showPage()
     c.save()
     print(f'Đã tạo {OUT}: {page} trang, {len(shots)} màn hình')

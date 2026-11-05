@@ -6,7 +6,8 @@ import 'account_screen.dart';
 import 'community_screen.dart';
 import 'explore_screen.dart';
 import 'garden_screen.dart';
-import 'reminders_screen.dart';
+import 'onboarding_screen.dart';
+import 'today_screen.dart';
 
 class HomeShell extends StatefulWidget {
   const HomeShell({super.key});
@@ -16,14 +17,17 @@ class HomeShell extends StatefulWidget {
 }
 
 class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
-  static const _pages = [GardenScreen(), RemindersScreen(), CommunityScreen(), ExploreScreen(), AccountScreen()];
+  static const _pages = [TodayScreen(), GardenScreen(), CommunityScreen(), ExploreScreen(), AccountScreen()];
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    // Lần đầu vào app: xin quyền thông báo để nhắc tưới kêu được.
-    WidgetsBinding.instance.addPostFrameCallback((_) => context.read<AppState>().notifications.requestPermissions(exact: false));
+    // Lần đầu vào app: giải thích vì sao cần thông báo rồi mới để hệ thống hỏi.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      if (!context.read<AppState>().notifPrimed) showNotificationPrimer(context);
+    });
   }
 
   @override
@@ -53,11 +57,11 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
           selectedIndex: i,
           onDestinationSelected: (v) => HomeShell.tab.value = v,
           destinations: const [
+            NavigationDestination(icon: Icon(Icons.wb_sunny_outlined), selectedIcon: Icon(Icons.wb_sunny_rounded), label: 'Hôm nay'),
             NavigationDestination(icon: Icon(Icons.yard_outlined), selectedIcon: Icon(Icons.yard_rounded), label: 'Vườn'),
-            NavigationDestination(icon: Icon(Icons.water_drop_outlined), selectedIcon: Icon(Icons.water_drop_rounded), label: 'Nhắc tưới'),
             NavigationDestination(icon: Icon(Icons.forum_outlined), selectedIcon: Icon(Icons.forum_rounded), label: 'Cộng đồng'),
             NavigationDestination(icon: Icon(Icons.explore_outlined), selectedIcon: Icon(Icons.explore_rounded), label: 'Khám phá'),
-            NavigationDestination(icon: Icon(Icons.person_outline_rounded), selectedIcon: Icon(Icons.person_rounded), label: 'Tài khoản'),
+            NavigationDestination(icon: Icon(Icons.person_outline_rounded), selectedIcon: Icon(Icons.person_rounded), label: 'Tôi'),
           ],
         ),
       ),

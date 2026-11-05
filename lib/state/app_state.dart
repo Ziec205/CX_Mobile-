@@ -9,6 +9,7 @@ import '../services/notifications.dart';
 import '../services/photo_store.dart';
 import '../services/push.dart';
 import '../services/realtime.dart';
+import '../services/reminder_schedule.dart';
 
 enum SessionStatus { loading, signedOut, signedIn }
 
@@ -38,11 +39,20 @@ class AppState extends ChangeNotifier {
   DateTime? lastSync;
   bool remindersOnPhone = true;
   int unreadChats = 0;
+  /// Đã xem màn hình giới thiệu lần đầu.
+  bool onboarded = true;
+  /// Đã giải thích vì sao cần quyền thông báo (trước khi hệ thống hỏi).
+  bool notifPrimed = true;
+  /// Số ngày liên tiếp có chăm cây (bấm "Đã làm"), tính trên máy.
+  int streak = 0;
   StreamSubscription<ChatMessage>? _msgSub;
 
   Future<void> bootstrap() async {
     final prefs = await SharedPreferences.getInstance();
     remindersOnPhone = prefs.getBool('care.onPhone') ?? true;
+    onboarded = prefs.getBool('ui.onboarded') ?? false;
+    notifPrimed = prefs.getBool('ui.notifPrimed') ?? false;
+    streak = _streakFrom(prefs.getStringList('care.doneDays') ?? const []);
     await api.load();
     if (!api.hasSession) return _signedOut();
     try {
@@ -148,6 +158,59 @@ class AppState extends ChangeNotifier {
     notifyListeners();
     if (on) await notifications.requestPermissions();
     await notifications.sync(plants ?? const [], enabled: on);
+  }
+
+  List<TodayTask> get today => todayTasks(plants ?? const [], DateTime.now());
+
+  Future<void> completeOnboarding() async {
+    onboarded = true;
+    notifyListeners();
+    (await SharedPreferences.getInstance()).setBool('ui.onboarded', true);
+  }
+
+  Future<void> markNotifPrimed() async {
+    notifPrimed = true;
+    (await SharedPreferences.getInstance()).setBool('ui.notifPrimed', true);
+  }
+
+  void _replaceReminder(String plantId, CareReminder r) {
+    plants = [
+      for (final p in plants ?? const <MyPlant>[])
+        p.id == plantId ? p.withReminders([for (final x in p.reminders) x.id == r.id ? r : x]) : p,
+    ];
+    notifyListeners();
+  }
+
+  /// Bấm "Đã tưới/Đã làm": lưu lên BE (web thấy ngay), cập nhật chuỗi ngày chăm cây.
+  Future<void> markDone(MyPlant p, CareReminder r) async {
+    final res = await api.post('me/garden/plants/${p.id}/reminders/${r.id}/done') as Map<String, dynamic>;
+    _replaceReminder(p.id, CareReminder.fromJson(res));
+    await CareNotifications.markDone(r.id);
+    final prefs = await SharedPreferences.getInstance();
+    final days = {...prefs.getStringList('care.doneDays') ?? const <String>[], _day(DateTime.now())}.toList()..sort();
+    await prefs.setStringList('care.doneDays', days.length > 400 ? days.sublist(days.length - 400) : days);
+    streak = _streakFrom(days);
+    notifyListeners();
+  }
+
+  /// Hoàn tác khi bấm nhầm.
+  Future<void> undoDone(MyPlant p, CareReminder r) async {
+    final res = await api.delete('me/garden/plants/${p.id}/reminders/${r.id}/done') as Map<String, dynamic>;
+    _replaceReminder(p.id, CareReminder.fromJson(res));
+  }
+
+  static String _day(DateTime d) => '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+
+  static int _streakFrom(List<String> days) {
+    final set = days.toSet();
+    var d = DateTime.now();
+    if (!set.contains(_day(d))) d = d.subtract(const Duration(days: 1)); // hôm nay chưa làm vẫn giữ chuỗi
+    var n = 0;
+    while (set.contains(_day(d))) {
+      n++;
+      d = d.subtract(const Duration(days: 1));
+    }
+    return n;
   }
 
   Future<void> refreshUnread() async {

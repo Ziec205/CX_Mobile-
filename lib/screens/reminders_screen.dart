@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../api/models.dart';
-import '../services/notifications.dart';
 import '../services/reminder_schedule.dart';
 import '../state/app_state.dart';
 import '../theme.dart';
+import '../widgets/care_actions.dart';
 import '../widgets/common.dart';
 import 'plant_detail_screen.dart';
 
@@ -30,7 +30,7 @@ class RemindersScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Nhắc tưới')),
+      appBar: AppBar(title: const Text('Lịch nhắc 7 ngày')),
       body: RefreshIndicator(
         color: CxColors.water500,
         onRefresh: app.syncGarden,
@@ -70,10 +70,7 @@ class RemindersScreen extends StatelessWidget {
                       trailing: IconButton(
                         tooltip: 'Đánh dấu đã làm',
                         icon: const Icon(Icons.check_circle_outline_rounded, color: CxColors.water500),
-                        onPressed: () async {
-                          await CareNotifications.markDone(s.reminder.id);
-                          if (context.mounted) showInfo(context, 'Đã ghi nhận: ${reminderKindLabel[s.reminder.kind]} ${s.plant.name}');
-                        },
+                        onPressed: () => completeCare(context, s.plant, s.reminder),
                       ),
                     ),
                   ),

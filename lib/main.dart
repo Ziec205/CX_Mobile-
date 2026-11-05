@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'screens/home_shell.dart';
 import 'screens/login_screen.dart';
+import 'screens/onboarding_screen.dart';
 import 'screens/plant_detail_screen.dart';
 import 'services/notifications.dart';
 import 'state/app_state.dart';
@@ -53,13 +54,14 @@ class _ChamXanhAppState extends State<ChamXanhApp> {
   }
 
   void _openPlant(String id) {
-    HomeShell.tab.value = 1;
+    HomeShell.tab.value = 0;
     navigatorKey.currentState?.push(MaterialPageRoute(builder: (_) => PlantDetailScreen(plantId: id)));
   }
 
   @override
   Widget build(BuildContext context) {
     final status = context.select<AppState, SessionStatus>((a) => a.status);
+    final onboarded = context.select<AppState, bool>((a) => a.onboarded);
     if (status == SessionStatus.signedIn && _pendingPlant != null) {
       final id = _pendingPlant!;
       _pendingPlant = null;
@@ -75,7 +77,7 @@ class _ChamXanhAppState extends State<ChamXanhApp> {
       localizationsDelegates: const [GlobalMaterialLocalizations.delegate, GlobalWidgetsLocalizations.delegate, GlobalCupertinoLocalizations.delegate],
       home: switch (status) {
         SessionStatus.loading => const _Splash(),
-        SessionStatus.signedOut => const LoginScreen(),
+        SessionStatus.signedOut => onboarded ? const LoginScreen() : const OnboardingScreen(),
         SessionStatus.signedIn => const HomeShell(),
       },
     );

@@ -74,6 +74,35 @@ class ReminderSchedule {
   }
 }
 
+/// Việc chăm cây trong ngày hôm nay (giờ máy), kèm trạng thái đã làm (đồng bộ app ↔ web qua lastDoneAt).
+class TodayTask {
+  TodayTask({required this.plant, required this.reminder, required this.at, required this.done});
+  final MyPlant plant;
+  final CareReminder reminder;
+  final DateTime at; // UTC
+  final bool done;
+  bool get overdue => !done && at.isBefore(DateTime.now().toUtc());
+}
+
+List<TodayTask> todayTasks(List<MyPlant> plants, DateTime now) {
+  final local = now.toLocal();
+  final start = DateTime(local.year, local.month, local.day);
+  final end = start.add(const Duration(days: 1));
+  final out = <TodayTask>[];
+  for (final p in plants) {
+    if (p.locked) continue;
+    for (final r in p.reminders) {
+      // Lấy các lần trong ngày tính từ mốc (không dựa vào nextAt vì BE dời nextAt ngay khi đến giờ).
+      for (final at in ReminderSchedule.upcoming(r, start.subtract(const Duration(milliseconds: 1)), end.subtract(const Duration(milliseconds: 1)), max: 4)) {
+        final done = r.lastDoneAt != null && !r.lastDoneAt!.toLocal().isBefore(start);
+        out.add(TodayTask(plant: p, reminder: r, at: at, done: done));
+      }
+    }
+  }
+  out.sort((a, b) => a.done == b.done ? a.at.compareTo(b.at) : (a.done ? 1 : -1));
+  return out;
+}
+
 class ScheduledCare {
   ScheduledCare({required this.plant, required this.reminder, required this.at});
   final MyPlant plant;
