@@ -34,7 +34,7 @@ class TodayScreen extends StatelessWidget {
         child: CustomScrollView(slivers: [
           SliverToBoxAdapter(
             child: Container(
-              padding: EdgeInsets.fromLTRB(20, MediaQuery.paddingOf(context).top + 12, 8, 64),
+              padding: EdgeInsets.fromLTRB(20, MediaQuery.paddingOf(context).top + 12, 8, 28),
               decoration: const BoxDecoration(
                 gradient: LinearGradient(colors: [CxColors.emerald700, CxColors.emerald900], begin: Alignment.topLeft, end: Alignment.bottomRight),
                 borderRadius: BorderRadius.vertical(bottom: Radius.circular(32)),
@@ -53,9 +53,9 @@ class TodayScreen extends StatelessWidget {
             ),
           ),
           SliverToBoxAdapter(
-            child: Transform.translate(
-              offset: const Offset(0, -44),
-              child: Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: _ProgressCard(tasks: tasks, streak: app.streak, hasPlants: (app.plants ?? const []).isNotEmpty)),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
+              child: _ProgressCard(tasks: tasks, streak: app.streak, hasPlants: (app.plants ?? const []).isNotEmpty),
             ),
           ),
           if (app.plants == null)
