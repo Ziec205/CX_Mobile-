@@ -1,0 +1,12 @@
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {615013cc-a727-4646-b155-4d2364afb607} may be persisted to storage in unencrypted form.
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://0.0.0.0:5080
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: /tmp/be
+warn: ChamXanh.Api.Modules.Admin.AdminAuthService[0]
+      Đã tạo Super Admin 'admin'. Hãy bật 2FA và đổi mật khẩu ngay.

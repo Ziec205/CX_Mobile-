@@ -1,0 +1,257 @@
+Resolving dependencies...
+Downloading packages...
+  characters 1.4.0 (1.4.1 available)
+  clock 1.1.2 (1.1.3 available)
+  cross_file 0.3.5+2 (0.4.0 available)
+  cupertino_icons 1.0.9 (2.0.0 available)
+  dbus 0.7.15 (0.8.0 available)
+  file_selector_linux 0.9.4 (0.9.4+1 available)
+  file_selector_macos 0.9.5 (0.9.5+2 available)
+  file_selector_windows 0.9.3+5 (0.9.3+6 available)
+  flutter_lints 5.0.0 (6.0.0 available)
+  flutter_local_notifications 20.1.0 (22.3.3 available)
+  flutter_local_notifications_linux 7.0.0 (8.0.2 available)
+  flutter_local_notifications_platform_interface 10.0.0 (12.2.0 available)
+  flutter_local_notifications_windows 2.0.1 (3.1.1 available)
+  flutter_plugin_android_lifecycle 2.0.34 (2.0.35 available)
+  flutter_secure_storage 10.3.4 (11.2.0 available)
+  flutter_secure_storage_darwin 0.3.2 (0.4.3 available)
+  flutter_secure_storage_windows 4.1.0 (4.2.2 available)
+  image_picker 1.2.2 (1.2.4 available)
+  image_picker_android 0.8.13+17 (0.8.13+25 available)
+  image_picker_ios 0.8.13+3 (0.8.13+14 available)
+  image_picker_platform_interface 2.11.1 (2.11.2 available)
+  intl 0.20.2 (0.20.3 available)
+  jni 1.1.1 (1.1.2 available)
+  lints 5.1.1 (6.1.0 available)
+  matcher 0.12.17 (0.12.20 available)
+  material_color_utilities 0.11.1 (0.13.1 available)
+  meta 1.16.0 (1.19.0 available)
+  package_config 2.2.0 (3.0.0 available)
+  path_provider 2.1.5 (2.1.6 available)
+  path_provider_foundation 2.5.1 (2.6.0 available)
+  path_provider_linux 2.2.1 (2.2.2 available)
+  path_provider_platform_interface 2.1.2 (2.1.3 available)
+  petitparser 7.0.2 (7.1.0 available)
+  platform 3.1.6 (3.2.0 available)
+  qr 3.0.3 (4.0.1 available)
+  shared_preferences 2.5.5 (2.5.6 available)
+  shared_preferences_android 2.4.23 (2.5.4 available)
+  shared_preferences_foundation 2.5.6 (2.6.1 available)
+  sse 4.1.8 (4.2.0 available)
+  sse_channel 0.1.1 (0.2.2 available)
+  stack_trace 1.12.1 (1.12.2 available)
+  test_api 0.7.6 (0.7.15 available)
+  timezone 0.10.1 (0.11.2 available)
+  url_launcher 6.3.2 (6.3.3 available)
+  url_launcher_android 6.3.29 (6.3.33 available)
+  url_launcher_ios 6.3.6 (6.4.2 available)
+  url_launcher_linux 3.2.2 (3.2.3 available)
+  url_launcher_macos 3.2.5 (3.2.6 available)
+  url_launcher_web 2.4.1 (2.4.3 available)
+  url_launcher_windows 3.1.5 (3.1.6 available)
+  vector_math 2.2.0 (2.4.4 available)
+  web 1.1.1 (1.1.2 available)
+  win32 5.15.0 (6.4.0 available)
+  xml 6.6.1 (7.1.0 available)
+Got dependencies!
+54 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Running Gradle task 'assembleDebug'...                          
+Checking the license for package NDK (Side by side) 27.0.12077973 in /usr/local/lib/android/sdk/licenses
+License for package NDK (Side by side) 27.0.12077973 accepted.
+Preparing "Install NDK (Side by side) 27.0.12077973 v.27.0.12077973".
+"Install NDK (Side by side) 27.0.12077973 v.27.0.12077973" ready.
+Installing NDK (Side by side) 27.0.12077973 in /usr/local/lib/android/sdk/ndk/27.0.12077973
+"Install NDK (Side by side) 27.0.12077973 v.27.0.12077973" complete.
+"Install NDK (Side by side) 27.0.12077973 v.27.0.12077973" finished.
+Checking the license for package CMake 3.22.1 in /usr/local/lib/android/sdk/licenses
+License for package CMake 3.22.1 accepted.
+Preparing "Install CMake 3.22.1 v.3.22.1".
+"Install CMake 3.22.1 v.3.22.1" ready.
+Installing CMake 3.22.1 in /usr/local/lib/android/sdk/cmake/3.22.1
+"Install CMake 3.22.1 v.3.22.1" complete.
+"Install CMake 3.22.1 v.3.22.1" finished.
+Running Gradle task 'assembleDebug'...                            293.3s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          573ms
+I/Choreographer( 6534): Skipped 33 frames!  The application may be doing too much work on its main thread.
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:36163/uLAnAAnheNo=/
+VMServiceFlutterDriver: Isolate found with number: 1457042031239523
+VMServiceFlutterDriver: Isolate 1457042031239523 is runnable.
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 6534): 00:00 +0: Đi qua toàn bộ app với BE thật
+VMServiceFlutterDriver: Connected to Flutter application.
+D/EGL_emulation( 6534): app_time_stats: avg=252.14ms min=34.71ms max=668.46ms count=7
+I/flutter ( 6534): Đã chụp 00a-gioi-thieu (3 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=168.27ms min=19.14ms max=626.28ms count=6
+D/ProfileInstaller( 6534): Installing profile for vn.chamxanh.app
+D/EGL_emulation( 6534): app_time_stats: avg=92.24ms min=25.47ms max=121.75ms count=11
+I/flutter ( 6534): Đã chụp 00b-gioi-thieu (2 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=133.11ms min=75.91ms max=295.02ms count=8
+I/flutter ( 6534): Đã chụp 01-dang-nhap (4 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=109.90ms min=5.08ms max=188.97ms count=9
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F....ID 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F....ID 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+I/AssistStructure( 6534): Flattened final assist data: 480 bytes, containing 1 windows, 3 views
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+W/IInputConnectionWrapper( 6534): getTextAfterCursor on inactive InputConnection
+W/IInputConnectionWrapper( 6534): getSelectedText on inactive InputConnection
+W/IInputConnectionWrapper( 6534): endBatchEdit on inactive InputConnection
+D/EGL_emulation( 6534): app_time_stats: avg=84.35ms min=21.86ms max=149.20ms count=12
+W/IInputConnectionWrapper( 6534): beginBatchEdit on inactive InputConnection
+W/IInputConnectionWrapper( 6534): getTextBeforeCursor on inactive InputConnection
+W/IInputConnectionWrapper( 6534): getTextAfterCursor on inactive InputConnection
+W/IInputConnectionWrapper( 6534): getSelectedText on inactive InputConnection
+W/IInputConnectionWrapper( 6534): endBatchEdit on inactive InputConnection
+I/flutter ( 6534): Đã chụp 02-dang-ky (3 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=149.47ms min=93.99ms max=297.66ms count=7
+D/EGL_emulation( 6534): app_time_stats: avg=275.99ms min=31.90ms max=811.37ms count=4
+I/flutter ( 6534): Đã chụp 03-xin-quyen (2 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=232.86ms min=107.22ms max=887.08ms count=7
+I/flutter ( 6534): Đã chụp 04-hom-nay-trong (8 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=114.23ms min=41.11ms max=276.89ms count=11
+D/EGL_emulation( 6534): app_time_stats: avg=5941.00ms min=5348.68ms max=6533.33ms count=2
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+W/IInputConnectionWrapper( 6534): getTextAfterCursor on inactive InputConnection
+W/IInputConnectionWrapper( 6534): getSelectedText on inactive InputConnection
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+W/IInputConnectionWrapper( 6534): endBatchEdit on inactive InputConnection
+I/AssistStructure( 6534): Flattened final assist data: 480 bytes, containing 1 windows, 3 views
+D/EGL_emulation( 6534): app_time_stats: avg=123.48ms min=41.03ms max=367.97ms count=8
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController( 6534): show(ime(), fromIme=true)
+D/InsetsController( 6534): show(ime(), fromIme=true)
+W/IInputConnectionWrapper( 6534): beginBatchEdit on inactive InputConnection
+W/IInputConnectionWrapper( 6534): getTextBeforeCursor on inactive InputConnection
+W/IInputConnectionWrapper( 6534): getTextAfterCursor on inactive InputConnection
+W/IInputConnectionWrapper( 6534): getSelectedText on inactive InputConnection
+W/IInputConnectionWrapper( 6534): endBatchEdit on inactive InputConnection
+D/EGL_emulation( 6534): app_time_stats: avg=1323.04ms min=1323.04ms max=1323.04ms count=1
+D/InsetsController( 6534): show(ime(), fromIme=true)
+D/InsetsController( 6534): show(ime(), fromIme=true)
+D/InsetsController( 6534): show(ime(), fromIme=true)
+D/EGL_emulation( 6534): app_time_stats: avg=221.57ms min=41.09ms max=392.21ms count=5
+I/flutter ( 6534): Đã chụp 06-chon-loai (2 chú thích)
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/EGL_emulation( 6534): app_time_stats: avg=130.55ms min=66.73ms max=284.97ms count=8
+D/InsetsController( 6534): show(ime(), fromIme=true)
+D/InsetsController( 6534): show(ime(), fromIme=true)
+D/EGL_emulation( 6534): app_time_stats: avg=1250.08ms min=130.49ms max=2369.66ms count=2
+D/EGL_emulation( 6534): app_time_stats: avg=125.70ms min=78.52ms max=235.34ms count=8
+I/flutter ( 6534): Đã chụp 05-them-cay (5 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=133.08ms min=57.25ms max=303.90ms count=9
+D/EGL_emulation( 6534): app_time_stats: avg=114.11ms min=97.17ms max=118.46ms count=9
+D/CompatibilityChangeReporter( 6534): Compat change id reported: 160794467; UID 10145; state: ENABLED
+D/EGL_emulation( 6534): app_time_stats: avg=265.64ms min=114.19ms max=1002.93ms count=6
+D/EGL_emulation( 6534): app_time_stats: avg=97.35ms min=38.27ms max=122.00ms count=11
+D/EGL_emulation( 6534): app_time_stats: avg=116.19ms min=112.14ms max=120.52ms count=9
+I/flutter ( 6534): Đã chụp 07-vuon (4 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=116.59ms min=37.30ms max=261.45ms count=9
+I/flutter ( 6534): Đã chụp 08-chi-tiet-cay (5 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=112.56ms min=44.70ms max=187.92ms count=9
+I/flutter ( 6534): Đã chụp 09-them-anh (2 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=125.20ms min=29.15ms max=319.47ms count=10
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+I/AssistStructure( 6534): Flattened final assist data: 380 bytes, containing 1 windows, 3 views
+D/EGL_emulation( 6534): app_time_stats: avg=100.11ms min=43.15ms max=132.82ms count=11
+D/InsetsController( 6534): show(ime(), fromIme=true)
+D/EGL_emulation( 6534): app_time_stats: avg=5487.40ms min=125.56ms max=10849.25ms count=2
+I/flutter ( 6534): Đã chụp 10-dat-nhac (6 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=173.98ms min=73.89ms max=345.11ms count=7
+I/vn.chamxanh.ap( 6534): Background concurrent copying GC freed 66432(3130KB) AllocSpace objects, 77(3292KB) LOS objects, 49% free, 6232KB/12MB, paused 2.390ms,8us total 140.219ms
+D/EGL_emulation( 6534): app_time_stats: avg=110.37ms min=44.81ms max=157.80ms count=9
+I/flutter ( 6534): Đã chụp 11-chi-tiet-co-nhac (3 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=151.91ms min=111.99ms max=432.60ms count=9
+D/EGL_emulation( 6534): app_time_stats: avg=89.71ms min=41.39ms max=145.83ms count=12
+D/EGL_emulation( 6534): app_time_stats: avg=116.49ms min=113.51ms max=121.52ms count=9
+I/flutter ( 6534): Đã chụp 12-hom-nay (4 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=129.11ms min=51.10ms max=310.33ms count=8
+D/EGL_emulation( 6534): app_time_stats: avg=102.55ms min=46.80ms max=120.49ms count=10
+I/flutter ( 6534): Đã chụp 13-cam-on (3 chú thích)
+I/vn.chamxanh.ap( 6534): Background concurrent copying GC freed 128723(5626KB) AllocSpace objects, 123(8720KB) LOS objects, 49% free, 6198KB/12MB, paused 12us,6us total 112.862ms
+D/EGL_emulation( 6534): app_time_stats: avg=385.69ms min=114.86ms max=1461.95ms count=5
+D/EGL_emulation( 6534): app_time_stats: avg=117.12ms min=109.56ms max=123.60ms count=9
+I/flutter ( 6534): Đã chụp 14-dong-bo-web (3 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=112.01ms min=35.60ms max=215.20ms count=9
+D/EGL_emulation( 6534): app_time_stats: avg=112.53ms min=90.62ms max=119.79ms count=9
+D/EGL_emulation( 6534): app_time_stats: avg=116.59ms min=114.22ms max=119.61ms count=9
+I/flutter ( 6534): Đã chụp 15-vuon-dong-bo (1 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=105.08ms min=41.97ms max=216.04ms count=10
+D/EGL_emulation( 6534): app_time_stats: avg=99.42ms min=24.27ms max=117.57ms count=10
+I/flutter ( 6534): Đã chụp 16-lich-nhac (4 chú thích)
+I/flutter ( 6534): CX_SHADE_NOW
+D/EGL_emulation( 6534): app_time_stats: avg=12555.02ms min=12555.02ms max=12555.02ms count=1
+D/EGL_emulation( 6534): app_time_stats: avg=85.35ms min=32.34ms max=119.66ms count=12
+I/flutter ( 6534): Đã chụp 17-cong-dong (3 chú thích)
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/EGL_emulation( 6534): app_time_stats: avg=115.65ms min=9.87ms max=282.03ms count=10
+I/flutter ( 6534): Đã chụp 18-bai-viet (3 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=131.84ms min=68.76ms max=198.29ms count=8
+D/EGL_emulation( 6534): app_time_stats: avg=107.17ms min=27.40ms max=218.91ms count=11
+D/EGL_emulation( 6534): app_time_stats: avg=105.84ms min=63.97ms max=118.33ms count=10
+D/EGL_emulation( 6534): app_time_stats: avg=99.31ms min=38.38ms max=228.15ms count=10
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController( 6534): show(ime(), fromIme=true)
+D/EGL_emulation( 6534): app_time_stats: avg=17552.48ms min=118.47ms max=34986.50ms count=2
+D/InsetsController( 6534): show(ime(), fromIme=true)
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController( 6534): show(ime(), fromIme=true)
+D/InsetsController( 6534): show(ime(), fromIme=true)
+D/EGL_emulation( 6534): app_time_stats: avg=155.92ms min=32.24ms max=344.65ms count=6
+I/flutter ( 6534): Đã chụp 19-dang-bai (5 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=125.12ms min=27.56ms max=399.19ms count=8
+D/EGL_emulation( 6534): app_time_stats: avg=83.29ms min=28.10ms max=131.81ms count=12
+I/flutter ( 6534): Đã chụp 20-kham-pha (1 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=124.73ms min=15.85ms max=258.01ms count=8
+I/flutter ( 6534): Đã chụp 21-bai-kham-pha (1 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=158.62ms min=66.13ms max=565.91ms count=8
+D/EGL_emulation( 6534): app_time_stats: avg=99.72ms min=48.85ms max=170.20ms count=11
+D/EGL_emulation( 6534): app_time_stats: avg=107.84ms min=35.58ms max=131.54ms count=10
+I/flutter ( 6534): Đã chụp 22-tin-nhan-moi (1 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=137.90ms min=110.87ms max=304.88ms count=9
+D/EGL_emulation( 6534): app_time_stats: avg=103.71ms min=12.78ms max=201.60ms count=10
+I/flutter ( 6534): Đã chụp 23-danh-sach-chat (2 chú thích)
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputMethodManager( 6534): showSoftInput() view=io.flutter.embedding.android.FlutterView{9ae3a83 VFE...... .F...... 0,0-1080,2274 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/EGL_emulation( 6534): app_time_stats: avg=135.41ms min=38.92ms max=245.30ms count=8
+D/InsetsController( 6534): show(ime(), fromIme=true)
+D/InsetsController( 6534): show(ime(), fromIme=true)
+D/EGL_emulation( 6534): app_time_stats: avg=2760.46ms min=157.60ms max=10242.49ms count=4
+D/EGL_emulation( 6534): app_time_stats: avg=251.57ms min=71.11ms max=452.99ms count=4
+I/flutter ( 6534): Đã chụp 24-chat (3 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=144.59ms min=66.16ms max=384.94ms count=7
+D/EGL_emulation( 6534): app_time_stats: avg=90.52ms min=27.87ms max=130.83ms count=11
+I/flutter ( 6534): Đã chụp 25-tai-khoan (3 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=132.42ms min=26.17ms max=325.38ms count=8
+I/flutter ( 6534): Đã chụp 26-goi (2 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=125.66ms min=110.81ms max=193.67ms count=8
+D/EGL_emulation( 6534): app_time_stats: avg=105.05ms min=63.61ms max=133.02ms count=10
+D/EGL_emulation( 6534): app_time_stats: avg=116.58ms min=111.91ms max=123.15ms count=9
+I/flutter ( 6534): Đã chụp 27-thanh-toan (4 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=112.51ms min=42.73ms max=222.41ms count=9
+I/flutter ( 6534): Đã chụp 28-thanh-cong (2 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=99.14ms min=23.58ms max=193.51ms count=10
+D/EGL_emulation( 6534): app_time_stats: avg=116.91ms min=78.72ms max=190.51ms count=9
+I/flutter ( 6534): Đã chụp 29-dang-xuat (2 chú thích)
+D/EGL_emulation( 6534): app_time_stats: avg=109.13ms min=37.04ms max=284.56ms count=11
+I/flutter ( 6534): 01:25 +1: (tearDownAll)
+I/flutter ( 6534): 01:25 +2: All tests passed!
+All tests passed.
+Đã lưu 31 ảnh vào /home/runner/work/CX_Mobile-/CX_Mobile-/build/shots
+adb uninstall failed: ProcessException: Process exited abnormally with exit code 1:
+Failure [DELETE_FAILED_INTERNAL_ERROR]
+  Command: /usr/local/lib/android/sdk/platform-tools/adb -s emulator-5554 uninstall vn.chamxanh.cham_xanh
+Failed to uninstall app
