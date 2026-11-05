@@ -11,6 +11,9 @@ on:
         required: false
         default: "https://chamxanh-api.onrender.com"
 
+permissions:
+  contents: write
+
 env:
   FLUTTER_VERSION: "3.35.7"
   API_BASE: ${{ github.event.inputs.api_base || 'https://chamxanh-api.onrender.com' }}
@@ -52,6 +55,16 @@ jobs:
           name: cham-xanh-android-apk
           path: build/app/outputs/flutter-apk/app-release.apk
           retention-days: 14
+      - name: Đưa APK lên bản thử mới nhất (link tải cố định)
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp build/app/outputs/flutter-apk/app-release.apk cham-xanh.apk
+          NOTES="Bản thử tự động từ commit ${GITHUB_SHA::7} ($(date -u +%F)). Máy chủ: ${{ env.API_BASE }}. Cài: tải cham-xanh.apk trên điện thoại Android, cho phép cài từ nguồn này."
+          gh release view ban-thu-moi-nhat >/dev/null 2>&1 || gh release create ban-thu-moi-nhat --prerelease --title "Bản thử mới nhất (Android)" --notes "$NOTES"
+          gh release edit ban-thu-moi-nhat --notes "$NOTES" --target "$GITHUB_SHA"
+          gh release upload ban-thu-moi-nhat cham-xanh.apk --clobber
 
   ios:
     name: iOS (chưa ký)
