@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../api/models.dart';
 import '../state/app_state.dart';
+import 'account_screen.dart';
 import '../theme.dart';
 import '../widgets/common.dart';
 
@@ -66,6 +67,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
               ]),
             ),
           ),
+          const AccountAction(),
         ],
       ),
       body: RefreshIndicator(

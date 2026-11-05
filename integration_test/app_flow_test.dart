@@ -14,7 +14,8 @@ import 'package:cham_xanh/main.dart';
 import 'package:cham_xanh/services/notifications.dart';
 import 'package:cham_xanh/services/photo_store.dart';
 import 'package:cham_xanh/state/app_state.dart';
-import 'package:cham_xanh/widgets/chat_action.dart';
+import 'package:cham_xanh/screens/account_screen.dart';
+import 'package:cham_xanh/screens/explore_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -194,14 +195,14 @@ void main() {
     await t.tap(btn('Cho phép nhắc'));
     await waitFor(t, find.text('Bắt đầu với cây đầu tiên'));
     await shot(t, '04-hom-nay-trong', 'Hôm nay (lần đầu)', 'Trang chủ cho biết hôm nay vườn cần gì. Lần đầu, app gợi ý thêm cây đầu tiên.', [
-      (find.byType(ChatAction), 'Tin nhắn (số đỏ = tin chưa đọc)'),
+      (find.byType(AccountAction).first, 'Tài khoản, nâng cấp gói'),
       (btn('Thêm cây đầu tiên'), 'Thêm cây đầu tiên'),
       (find.text('Lối tắt'), 'Lối tắt: thêm cây, lịch nhắc, hỏi cộng đồng'),
       (navTab('Hôm nay'), 'Việc cần làm hôm nay'),
       (navTab('Vườn'), 'Tất cả cây của bạn'),
       (navTab('Cộng đồng'), 'Hỏi đáp, khoe cây'),
       (navTab('Khám phá'), 'Bài viết chăm cây'),
-      (navTab('Tôi'), 'Tài khoản, nâng cấp gói'),
+      (navTab('Tin nhắn'), 'Tin nhắn (số đỏ = tin chưa đọc)'),
     ]);
 
     // ---------- Thêm cây ----------
@@ -419,15 +420,14 @@ void main() {
 
     // ---------- Khám phá ----------
     await t.tap(nav('Khám phá'));
-    await waitFor(t, find.text('Bài hôm nay'));
+    await waitFor(t, find.byType(ExplorePlantCard));
     await shot(t, '20-kham-pha', 'Khám phá', 'Bài viết chăm cây do Chạm Xanh biên soạn, mới nhất ở trên cùng.', [
-      (find.text('Bài hôm nay'), 'Bài mới nhất'),
-      (find.byType(Card).at(1), 'Các bài khác: bấm để đọc'),
+      (find.byType(ExplorePlantCard).first, 'Bài mới nhất: bấm để đọc'),
     ]);
-    await t.tap(find.text('Bài hôm nay').first);
+    await t.tap(find.byType(ExplorePlantCard).first);
     await waitFor(t, find.textContaining('#'));
     await shot(t, '21-bai-kham-pha', 'Đọc bài Khám phá', 'Kéo xuống để đọc hết bài.', [
-      (find.byType(AppBar), 'Quay lại danh sách'),
+      (find.byType(SliverAppBar), 'Quay lại danh sách'),
     ]);
     navigatorKey.currentState!.pop();
     await settle(t);
@@ -444,9 +444,9 @@ void main() {
       await t.tap(nav('Hôm nay'));
       await settle(t, 1500);
       await shot(t, '22-tin-nhan-moi', 'Có tin nhắn mới', 'Số trên biểu tượng tin nhắn cập nhật ngay khi có tin mới (realtime).', [
-        (find.byTooltip('Tin nhắn').first, 'Tin nhắn chưa đọc'),
+        (navTab('Tin nhắn'), 'Tin nhắn chưa đọc'),
       ]);
-      await t.tap(find.byTooltip('Tin nhắn').first);
+      await t.tap(nav('Tin nhắn'));
       await waitFor(t, find.text('Monstera lá xẻ chậu 30cm'));
       await waitFor(t, find.text('Trực tuyến'), seconds: 30);
       await shot(t, '23-danh-sach-chat', 'Tin nhắn', 'Các cuộc trò chuyện mua bán cây. Chấm xanh “Trực tuyến” = đang nhận tin tức thì.', [
@@ -468,19 +468,15 @@ void main() {
       ]);
       navigatorKey.currentState!.pop();
       await settle(t);
-      navigatorKey.currentState!.pop();
-      await settle(t);
     }
 
     // ---------- Tài khoản, nâng cấp gói ----------
-    await t.tap(nav('Tôi'));
+    await t.tap(find.byTooltip('Tài khoản').first);
     await waitFor(t, find.text('Nâng cấp gói'));
-    await shot(t, '25-tai-khoan', 'Tài khoản', 'Quản lý gói, tin nhắn, email nhận nhắc và báo thức.', [
+    await shot(t, '25-tai-khoan', 'Tài khoản', 'Quản lý gói, email nhận nhắc và báo thức.', [
       (find.text('Nâng cấp gói'), 'Xem và mua gói Xanh Plus / Xanh Pro'),
-      (find.text('Tin nhắn').last, 'Tin nhắn'),
       (find.text('Email nhận nhắc lịch'), 'Đổi email nhận nhắc'),
       (find.byType(SwitchListTile), 'Bật/tắt báo thức trên máy'),
-      (find.text('Mở Chạm Xanh trên web'), 'Mở web: chợ cây, trợ lý AI'),
     ]);
     await t.tap(find.text('Nâng cấp gói'));
     await waitFor(t, find.text('Mua Xanh Plus'));
@@ -513,9 +509,6 @@ void main() {
       navigatorKey.currentState!.pop();
     }
     navigatorKey.currentState!.pop();
-    await settle(t);
-    // Màn hình thấp (vd Pixel 6) phải cuộn mới thấy nút Đăng xuất.
-    await t.dragUntilVisible(find.text('Đăng xuất'), find.widgetWithText(ListView, 'Nâng cấp gói'), const Offset(0, -300));
     await settle(t);
     await t.tap(find.text('Đăng xuất'));
     await waitFor(t, find.text('Đăng xuất?'));

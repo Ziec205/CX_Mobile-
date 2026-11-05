@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import '../api/models.dart';
 import '../services/reminder_schedule.dart';
 import '../state/app_state.dart';
+import 'account_screen.dart';
 import '../theme.dart';
-import '../widgets/chat_action.dart';
 import '../widgets/common.dart';
 import '../widgets/plant_avatar.dart';
 import 'plant_detail_screen.dart';
@@ -21,7 +21,7 @@ class GardenScreen extends StatelessWidget {
     final plants = app.plants;
     final today = app.today;
     return Scaffold(
-      appBar: AppBar(title: const Text('Vườn của tôi'), actions: const [ChatAction()]),
+      appBar: AppBar(title: const Text('Vườn của tôi'), actions: const [AccountAction()]),
       floatingActionButton: FloatingActionButton.extended(
         heroTag: 'add-plant',
         onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PlantFormScreen())),

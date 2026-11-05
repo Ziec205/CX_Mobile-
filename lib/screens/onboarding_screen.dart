@@ -42,9 +42,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(children: [
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(onPressed: () => context.read<AppState>().completeOnboarding(), child: const Text('Bỏ qua')),
+          Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Image.asset('assets/images/logo.png', height: 32, semanticLabel: 'Logo Chạm Xanh'),
+              TextButton(onPressed: () => context.read<AppState>().completeOnboarding(), child: const Text('Bỏ qua')),
+            ]),
           ),
           Expanded(
             child: PageView.builder(

@@ -78,6 +78,9 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  assets:
+    - assets/images/logo.png
+
   # Font đóng gói (giấy phép OFL trong assets/fonts).
   fonts:
     - family: BeVietnamPro
@@ -90,12 +93,4 @@ flutter:
         - asset: assets/fonts/BeVietnamPro-Bold.ttf
           weight: 700
         - asset: assets/fonts/BeVietnamPro-ExtraBold.ttf
-          weight: 800
-    - family: Nunito
-      fonts:
-        - asset: assets/fonts/Nunito-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/Nunito-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/Nunito-ExtraBold.ttf
           weight: 800

@@ -31,13 +31,17 @@ class CxColors {
   static const water700 = Color(0xFF1D5388);
 
   static const danger = Color(0xFFB42318);
+
+  // Theo Figma trang Khám phá; web dùng cùng giá trị (globals.css).
+  static const leaf = Color(0xFFC9E8BF);
+  static const leafText = Color(0xFF4F6A49);
+  static const line = Color(0xFFC2C9BB);
 }
 
 /// Font đóng gói sẵn (assets/fonts, giấy phép OFL), không cần mạng:
-/// - Nunito: tiêu đề — nét tròn, thân thiện mà vẫn lịch sự.
-/// - Be Vietnam Pro: nội dung — do nhóm thiết kế Việt Nam làm, dấu tiếng Việt rõ ở cỡ nhỏ.
+/// Be Vietnam Pro cho cả tiêu đề và nội dung, giống web và Figma.
 const fontBody = 'BeVietnamPro';
-const fontDisplay = 'Nunito';
+const fontDisplay = 'BeVietnamPro';
 
 TextStyle _display(double size, FontWeight weight) => TextStyle(
       fontFamily: fontDisplay,
@@ -135,12 +139,12 @@ ThemeData buildTheme() {
       height: 72,
       elevation: 3,
       shadowColor: const Color(0x22000000),
-      indicatorColor: CxColors.emerald100,
+      indicatorColor: CxColors.emerald700,
       labelTextStyle: WidgetStateProperty.resolveWith((s) => text.bodySmall?.copyWith(
           fontSize: 12.5, fontWeight: s.contains(WidgetState.selected) ? FontWeight.w700 : FontWeight.w500,
           color: s.contains(WidgetState.selected) ? CxColors.emerald800 : CxColors.stone600)),
       iconTheme: WidgetStateProperty.resolveWith((s) =>
-          IconThemeData(color: s.contains(WidgetState.selected) ? CxColors.emerald800 : CxColors.stone500)),
+          IconThemeData(color: s.contains(WidgetState.selected) ? Colors.white : CxColors.stone500)),
     ),
     chipTheme: ChipThemeData(
       backgroundColor: Colors.white,

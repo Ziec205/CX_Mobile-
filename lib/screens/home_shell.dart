@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../state/app_state.dart';
-import 'account_screen.dart';
+import 'chat_screen.dart';
 import 'community_screen.dart';
 import 'explore_screen.dart';
 import 'garden_screen.dart';
@@ -17,7 +17,7 @@ class HomeShell extends StatefulWidget {
 }
 
 class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
-  static const _pages = [TodayScreen(), GardenScreen(), CommunityScreen(), ExploreScreen(), AccountScreen()];
+  static const _pages = [TodayScreen(), GardenScreen(), ExploreScreen(), CommunityScreen(), ChatListScreen()];
 
   @override
   void initState() {
@@ -56,12 +56,19 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
         bottomNavigationBar: NavigationBar(
           selectedIndex: i,
           onDestinationSelected: (v) => HomeShell.tab.value = v,
-          destinations: const [
-            NavigationDestination(icon: Icon(Icons.wb_sunny_outlined), selectedIcon: Icon(Icons.wb_sunny_rounded), label: 'Hôm nay'),
-            NavigationDestination(icon: Icon(Icons.yard_outlined), selectedIcon: Icon(Icons.yard_rounded), label: 'Vườn'),
-            NavigationDestination(icon: Icon(Icons.forum_outlined), selectedIcon: Icon(Icons.forum_rounded), label: 'Cộng đồng'),
-            NavigationDestination(icon: Icon(Icons.explore_outlined), selectedIcon: Icon(Icons.explore_rounded), label: 'Khám phá'),
-            NavigationDestination(icon: Icon(Icons.person_outline_rounded), selectedIcon: Icon(Icons.person_rounded), label: 'Tôi'),
+          destinations: [
+            const NavigationDestination(icon: Icon(Icons.wb_sunny_outlined), selectedIcon: Icon(Icons.wb_sunny_rounded), label: 'Hôm nay'),
+            const NavigationDestination(icon: Icon(Icons.yard_outlined), selectedIcon: Icon(Icons.yard_rounded), label: 'Vườn'),
+            const NavigationDestination(icon: Icon(Icons.explore_outlined), selectedIcon: Icon(Icons.explore_rounded), label: 'Khám phá'),
+            const NavigationDestination(icon: Icon(Icons.forum_outlined), selectedIcon: Icon(Icons.forum_rounded), label: 'Cộng đồng'),
+            NavigationDestination(
+              icon: Builder(builder: (context) {
+                final unread = context.select<AppState, int>((a) => a.unreadChats);
+                return Badge(isLabelVisible: unread > 0, label: Text(unread > 99 ? '99+' : '$unread'), child: const Icon(Icons.chat_bubble_outline_rounded));
+              }),
+              selectedIcon: const Icon(Icons.chat_bubble_rounded),
+              label: 'Tin nhắn',
+            ),
           ],
         ),
       ),

@@ -9,14 +9,14 @@ on:
       api_base:
         description: "API_BASE cho bản build"
         required: false
-        default: "https://chamxanh-api.onrender.com"
+        default: "https://cx-be.onrender.com"
 
 permissions:
   contents: write
 
 env:
   FLUTTER_VERSION: "3.35.7"
-  API_BASE: ${{ github.event.inputs.api_base || 'https://chamxanh-api.onrender.com' }}
+  API_BASE: ${{ github.event.inputs.api_base || 'https://cx-be.onrender.com' }}
 
 jobs:
   test:

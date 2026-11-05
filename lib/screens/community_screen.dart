@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 
 import '../api/models.dart';
 import '../state/app_state.dart';
+import 'account_screen.dart';
 import '../theme.dart';
-import '../widgets/chat_action.dart';
 import '../widgets/common.dart';
 
 /// Cộng đồng: hỏi đáp, khoe cây, kinh nghiệm (dùng chung dữ liệu với web).
@@ -69,7 +69,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Cộng đồng'), actions: const [ChatAction()]),
+      appBar: AppBar(title: const Text('Cộng đồng'), actions: const [AccountAction()]),
       floatingActionButton: FloatingActionButton.extended(
         heroTag: 'new-post',
         backgroundColor: CxColors.emerald700,

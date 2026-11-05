@@ -78,8 +78,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           Container(
                             width: 46,
                             height: 46,
-                            decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(14)),
-                            child: const Icon(Icons.eco_rounded, color: CxColors.wood400, size: 28),
+                            padding: const EdgeInsets.all(7),
+                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(14)),
+                            child: Image.asset('assets/images/logo.png', semanticLabel: 'Logo Chạm Xanh'),
                           ),
                           const SizedBox(height: 10),
                           Text('Chạm Xanh', style: t.headlineMedium?.copyWith(color: Colors.white)),

@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../api/api_client.dart';
@@ -10,7 +12,7 @@ import '../theme.dart';
 import '../widgets/common.dart';
 import 'upgrade_screen.dart';
 
-/// Thêm/sửa cây. Chỉ gửi dữ liệu cây lên BE; ảnh thêm ở màn hình chi tiết và lưu trên máy.
+/// Thêm/sửa cây. Chỉ gửi dữ liệu cây lên BE; ảnh chọn ở đây được lưu trên máy sau khi lưu cây.
 class PlantFormScreen extends StatefulWidget {
   const PlantFormScreen({super.key, this.plant});
   final MyPlant? plant;
@@ -25,6 +27,7 @@ class _PlantFormScreenState extends State<PlantFormScreen> {
   late final _note = TextEditingController(text: widget.plant?.note ?? '');
   late Species? _species = widget.plant?.speciesId == null ? null : Species(widget.plant!.speciesId!, widget.plant!.speciesName ?? widget.plant!.speciesId!);
   late DateTime? _acquired = widget.plant?.acquiredAt;
+  final List<XFile> _picked = [];
   bool _busy = false;
 
   @override
@@ -47,12 +50,24 @@ class _PlantFormScreenState extends State<PlantFormScreen> {
       'acquiredAt': _acquired == null ? null : DateTime.utc(_acquired!.year, _acquired!.month, _acquired!.day).toIso8601String(),
     };
     try {
+      final String id;
       if (widget.plant == null) {
-        await app.api.post('me/garden/plants', body);
+        final res = await app.api.post('me/garden/plants', body) as Map<String, dynamic>;
+        id = res['id'] as String;
       } else {
         await app.api.put('me/garden/plants/${widget.plant!.id}', body);
+        id = widget.plant!.id;
       }
       await app.syncGarden();
+      // Cây đã lưu: ảnh lỗi chỉ báo riêng, không coi là lưu cây thất bại.
+      final plantName = widget.plant?.name ?? _name.text.trim();
+      try {
+        for (final x in _picked) {
+          await app.photos.add(id, plantName, x.path);
+        }
+      } catch (e) {
+        if (mounted) showError(context, e);
+      }
       if (mounted) Navigator.pop(context, true);
     } on ApiException catch (e) {
       if (!mounted) return;
@@ -93,54 +108,141 @@ class _PlantFormScreenState extends State<PlantFormScreen> {
     }
   }
 
+  Future<void> _pickPhotos() async {
+    final source = await showModalBottomSheet<ImageSource>(
+      context: context,
+      showDragHandle: true,
+      builder: (ctx) => SafeArea(
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          ListTile(leading: const Icon(Icons.photo_camera_outlined), title: const Text('Chụp ảnh'), onTap: () => Navigator.pop(ctx, ImageSource.camera)),
+          ListTile(leading: const Icon(Icons.photo_library_outlined), title: const Text('Chọn từ thư viện'), onTap: () => Navigator.pop(ctx, ImageSource.gallery)),
+        ]),
+      ),
+    );
+    if (source == null) return;
+    final picker = ImagePicker();
+    final files = source == ImageSource.camera
+        ? [if (await picker.pickImage(source: source, imageQuality: 88, maxWidth: 2400) case final x?) x]
+        : await picker.pickMultiImage(imageQuality: 88, maxWidth: 2400);
+    if (mounted && files.isNotEmpty) setState(() => _picked.addAll(files));
+  }
+
+  Widget _photoArea() {
+    if (_picked.isEmpty) {
+      return Material(
+        color: CxColors.emerald50,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: CxColors.emerald200)),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: _pickPhotos,
+          child: const SizedBox(
+            height: 168,
+            width: double.infinity,
+            child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Icon(Icons.add_a_photo_outlined, size: 34, color: CxColors.emerald700),
+              SizedBox(height: 8),
+              Text('Thêm ảnh cây', style: TextStyle(fontWeight: FontWeight.w700, color: CxColors.emerald800)),
+              SizedBox(height: 2),
+              Text('Ảnh chỉ lưu trên điện thoại của bạn', style: TextStyle(fontSize: 13, color: CxColors.stone600)),
+            ]),
+          ),
+        ),
+      );
+    }
+    return SizedBox(
+      height: 168,
+      child: ListView(scrollDirection: Axis.horizontal, children: [
+        for (final x in _picked)
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: Stack(children: [
+              ClipRRect(borderRadius: BorderRadius.circular(16), child: Image.file(File(x.path), width: 140, height: 168, fit: BoxFit.cover)),
+              Positioned(
+                top: 4,
+                right: 4,
+                child: IconButton.filledTonal(tooltip: 'Bỏ ảnh', iconSize: 18, icon: const Icon(Icons.close_rounded), onPressed: () => setState(() => _picked.remove(x))),
+              ),
+            ]),
+          ),
+        Material(
+          color: CxColors.emerald50,
+          borderRadius: BorderRadius.circular(16),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(16),
+            onTap: _pickPhotos,
+            child: const SizedBox(width: 100, child: Icon(Icons.add_a_photo_outlined, color: CxColors.emerald700)),
+          ),
+        ),
+      ]),
+    );
+  }
+
+  Widget _section(String title, List<Widget> children) => Container(
+        margin: const EdgeInsets.only(top: 14),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: CxColors.line)),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          Text(title, style: Theme.of(context).textTheme.titleMedium),
+          const SizedBox(height: 12),
+          ...children,
+        ]),
+      );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(widget.plant == null ? 'Thêm cây' : 'Sửa cây')),
-      body: Form(
-        key: _form,
-        child: ListView(padding: const EdgeInsets.all(20), children: [
-          TextFormField(
-            controller: _name,
-            maxLength: 80,
-            decoration: const InputDecoration(labelText: 'Tên gọi *', hintText: 'Vd: Trầu bà góc phòng khách'),
-            validator: (v) => (v ?? '').trim().isEmpty ? 'Nhập tên cây' : null,
-          ),
-          const SizedBox(height: 8),
-          InkWell(
-            onTap: _pickSpecies,
-            borderRadius: BorderRadius.circular(14),
-            child: InputDecorator(
-              decoration: InputDecoration(
-                labelText: 'Loài (không bắt buộc)',
-                suffixIcon: _species == null ? const Icon(Icons.search_rounded) : IconButton(tooltip: 'Bỏ chọn', icon: const Icon(Icons.close_rounded), onPressed: () => setState(() => _species = null)),
-              ),
-              child: Text(_species?.name ?? 'Chọn loài để có ảnh minh họa và gợi ý chăm', style: TextStyle(color: _species == null ? CxColors.stone500 : CxColors.stone900)),
-            ),
-          ),
-          const SizedBox(height: 16),
-          TextFormField(controller: _location, decoration: const InputDecoration(labelText: 'Vị trí đặt', hintText: 'Ban công, sân thượng…')),
-          const SizedBox(height: 16),
-          InkWell(
-            borderRadius: BorderRadius.circular(14),
-            onTap: () async {
-              final d = await showDatePicker(context: context, initialDate: _acquired ?? DateTime.now(), firstDate: DateTime(1990), lastDate: DateTime.now());
-              if (d != null) setState(() => _acquired = d);
-            },
-            child: InputDecorator(
-              decoration: const InputDecoration(labelText: 'Ngày bắt đầu trồng', suffixIcon: Icon(Icons.event_rounded)),
-              child: Text(_acquired == null ? 'Chưa chọn' : vnDate(_acquired!)),
-            ),
-          ),
-          const SizedBox(height: 16),
-          TextFormField(controller: _note, maxLines: 4, maxLength: 2000, decoration: const InputDecoration(labelText: 'Ghi chú')),
-          const SizedBox(height: 8),
-          const Text('Ảnh cây thêm ở trang chi tiết cây, lưu ngay trên điện thoại (không tải lên máy chủ).', style: TextStyle(color: CxColors.stone500, fontSize: 13)),
-          const SizedBox(height: 20),
-          FilledButton(
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+          child: FilledButton(
             onPressed: _busy ? null : _save,
             child: _busy ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white)) : const Text('Lưu'),
           ),
+        ),
+      ),
+      body: Form(
+        key: _form,
+        child: ListView(padding: const EdgeInsets.fromLTRB(16, 4, 16, 20), children: [
+          _photoArea(),
+          _section('Thông tin cây', [
+            TextFormField(
+              controller: _name,
+              maxLength: 80,
+              decoration: const InputDecoration(labelText: 'Tên gọi *', hintText: 'Vd: Trầu bà góc phòng khách', counterText: ''),
+              validator: (v) => (v ?? '').trim().isEmpty ? 'Nhập tên cây' : null,
+            ),
+            const SizedBox(height: 12),
+            InkWell(
+              onTap: _pickSpecies,
+              borderRadius: BorderRadius.circular(16),
+              child: InputDecorator(
+                decoration: InputDecoration(
+                  labelText: 'Loài (không bắt buộc)',
+                  suffixIcon: _species == null ? const Icon(Icons.search_rounded) : IconButton(tooltip: 'Bỏ chọn', icon: const Icon(Icons.close_rounded), onPressed: () => setState(() => _species = null)),
+                ),
+                child: Text(_species?.name ?? 'Chọn loài', style: TextStyle(color: _species == null ? CxColors.stone500 : CxColors.stone900)),
+              ),
+            ),
+          ]),
+          _section('Nơi trồng', [
+            TextFormField(controller: _location, decoration: const InputDecoration(labelText: 'Vị trí đặt', hintText: 'Ban công, sân thượng…')),
+            const SizedBox(height: 12),
+            InkWell(
+              borderRadius: BorderRadius.circular(16),
+              onTap: () async {
+                final d = await showDatePicker(context: context, initialDate: _acquired ?? DateTime.now(), firstDate: DateTime(1990), lastDate: DateTime.now());
+                if (d != null) setState(() => _acquired = d);
+              },
+              child: InputDecorator(
+                decoration: const InputDecoration(labelText: 'Ngày bắt đầu trồng', suffixIcon: Icon(Icons.event_rounded)),
+                child: Text(_acquired == null ? 'Chưa chọn' : vnDate(_acquired!)),
+              ),
+            ),
+          ]),
+          _section('Ghi chú', [
+            TextFormField(controller: _note, maxLines: 3, maxLength: 2000, decoration: const InputDecoration(labelText: 'Ghi chú', counterText: '')),
+          ]),
         ]),
       ),
     );

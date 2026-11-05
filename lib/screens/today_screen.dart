@@ -5,9 +5,9 @@ import 'package:provider/provider.dart';
 import '../api/models.dart';
 import '../services/reminder_schedule.dart';
 import '../state/app_state.dart';
+import 'account_screen.dart';
 import '../theme.dart';
 import '../widgets/care_actions.dart';
-import '../widgets/chat_action.dart';
 import '../widgets/common.dart';
 import '../widgets/plant_avatar.dart';
 import 'community_screen.dart';
@@ -48,7 +48,7 @@ class TodayScreen extends StatelessWidget {
                         style: t.headlineMedium?.copyWith(color: Colors.white, height: 1.15)),
                   ]),
                 ),
-                const IconTheme(data: IconThemeData(color: Colors.white), child: ChatAction()),
+                const AccountAction(),
               ]),
             ),
           ),

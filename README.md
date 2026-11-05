@@ -15,7 +15,7 @@ App Flutter (Android + iOS) cho Chạm Xanh, dùng chung tài khoản và dữ l
 | **Nhắc tưới** | Lịch 7 ngày tới. Báo thức trên máy (`flutter_local_notifications`): ưu tiên cao, chuông kiểu báo thức kêu lặp, hai nút **Đã tưới** / **Nhắc lại 10 phút**. Lịch được dựng lại từ `careReminders` của BE mỗi lần mở app, quay lại app hoặc sửa lời nhắc. Cách tính lặp lại giống hệt BE (`ReminderSchedule`). |
 | **Cộng đồng** | Hỏi đáp, khoe cây, kinh nghiệm: đọc, thích, bình luận, đăng bài. |
 | **Khám phá** | Bài viết từ `/api/explore`. |
-| **Tài khoản** | Nâng cấp gói, tin nhắn, email nhận nhắc, bật/tắt báo thức, đăng xuất. |
+| **Tin nhắn** | Tab riêng; ảnh đại diện trên thanh trên cùng mở tài khoản rút gọn: nâng cấp gói, email nhắc, báo thức, đăng xuất. |
 | Tin nhắn | Chat realtime qua SignalR (`/hubs/chat`, token từ `POST /api/auth/hub-token`, sự kiện `message`/`notification`). |
 | Nâng cấp gói | BE tạo đơn PayOS, app hiện **mã VietQR** ngay trong app (lưu được vào Ảnh để quét bằng app ngân hàng) và tự kiểm tra trạng thái mỗi 3 giây. |
 
@@ -25,7 +25,7 @@ App Flutter (Android + iOS) cho Chạm Xanh, dùng chung tài khoản và dữ l
 
 ```bash
 flutter pub get
-flutter run                                    # API mặc định https://chamxanh-api.onrender.com
+flutter run                                    # API mặc định https://cx-be.onrender.com
 flutter run --dart-define=API_BASE=http://10.0.2.2:5080   # BE chạy trên máy (Android emulator)
 ```
 
