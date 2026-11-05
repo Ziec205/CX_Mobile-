@@ -257,7 +257,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             if (_p.isPending) const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)),
             const SizedBox(width: 8),
-            Text(_p.isPending ? 'Đang chờ tiền về… (hết hạn ${vnDateTime(_p.expiresAt)})' : 'Đơn đã hết hạn hoặc bị hủy', style: t.bodyMedium),
+            Flexible(
+              child: Text(_p.isPending ? 'Đang chờ tiền về… (hết hạn ${vnDateTime(_p.expiresAt)})' : 'Đơn đã hết hạn hoặc bị hủy',
+                  style: t.bodyMedium, textAlign: TextAlign.center),
+            ),
           ]),
           const SizedBox(height: 20),
           if (_p.qrCode != null) OutlinedButton.icon(onPressed: _saveQr, icon: const Icon(Icons.download_rounded), label: const Text('Lưu mã QR vào Ảnh')),
