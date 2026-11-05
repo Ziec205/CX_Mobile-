@@ -85,6 +85,13 @@ class AppState extends ChangeNotifier {
     await _signedIn();
   }
 
+  /// Tăng mỗi khi ảnh cây trên máy đổi, để ảnh đại diện cây tải lại.
+  int photoVersion = 0;
+  void photosChanged() {
+    photoVersion++;
+    notifyListeners();
+  }
+
   Future<void> _signedIn() async {
     status = SessionStatus.signedIn;
     notifyListeners();

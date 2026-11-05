@@ -115,13 +115,13 @@ class PlantCard extends StatelessWidget {
     }
     return Material(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(24),
+      borderRadius: BorderRadius.circular(16),
       elevation: 0,
       child: InkWell(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(16),
         onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => PlantDetailScreen(plantId: p.id))),
         child: Ink(
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(24), boxShadow: softShadow, color: Colors.white),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), border: Border.all(color: CxColors.line), color: Colors.white),
           child: Opacity(
             opacity: p.locked ? 0.6 : 1,
             child: Padding(
@@ -130,7 +130,7 @@ class PlantCard extends StatelessWidget {
                 Expanded(
                   child: LayoutBuilder(
                     builder: (_, c) => ClipRRect(
-                      borderRadius: BorderRadius.circular(18),
+                      borderRadius: BorderRadius.circular(12),
                       child: SizedBox(
                         width: c.maxWidth,
                         height: c.maxHeight,

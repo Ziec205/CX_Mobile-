@@ -117,7 +117,7 @@ class _ProgressCard extends StatelessWidget {
                 : 'Bấm “Đã tưới” khi bạn làm xong từng việc.';
     return Container(
       padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24), boxShadow: softShadow),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), boxShadow: softShadow),
       child: Row(children: [
         SizedBox(
           width: 68,
@@ -173,14 +173,14 @@ class _TaskCardState extends State<TaskCard> {
     final doneLabel = water ? 'Đã tưới' : 'Đã làm';
     return Material(
       color: x.done ? CxColors.emerald50 : Colors.white,
-      borderRadius: BorderRadius.circular(22),
+      borderRadius: BorderRadius.circular(16),
       child: InkWell(
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(16),
         onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => PlantDetailScreen(plantId: x.plant.id))),
         child: Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(22),
+            borderRadius: BorderRadius.circular(16),
             border: Border.all(color: x.done ? CxColors.emerald200 : x.overdue ? CxColors.water100 : CxColors.stone100, width: x.overdue ? 2 : 1),
           ),
           child: Row(children: [
@@ -232,7 +232,7 @@ class _FirstPlantCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
         padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(color: CxColors.emerald50, borderRadius: BorderRadius.circular(24), border: Border.all(color: CxColors.emerald100)),
+        decoration: BoxDecoration(color: CxColors.emerald50, borderRadius: BorderRadius.circular(16), border: Border.all(color: CxColors.emerald100)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const Text('🪴', style: TextStyle(fontSize: 40)),
           const SizedBox(height: 8),
@@ -260,7 +260,7 @@ class _RestDayCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
         padding: const EdgeInsets.all(18),
-        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24), border: Border.all(color: CxColors.stone100)),
+        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: CxColors.stone100)),
         child: Row(children: [
           const Text('😌', style: TextStyle(fontSize: 34)),
           const SizedBox(width: 14),
@@ -278,9 +278,9 @@ class _Shortcuts extends StatelessWidget {
     Widget item(IconData icon, String label, Color bg, Color fg, Widget Function() page) => Expanded(
           child: Material(
             color: bg,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(16),
             child: InkWell(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(16),
               onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => page())),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),

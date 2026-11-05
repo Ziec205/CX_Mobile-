@@ -56,6 +56,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
         gallery &= inGallery;
       }
       await _loadPhotos();
+      app.photosChanged();
       if (mounted) {
         showInfo(context, gallery ? 'Đã lưu ${picked.length} ảnh vào máy và album "Chạm Xanh"' : 'Đã lưu ảnh trong app. Chưa có quyền lưu vào album Ảnh.');
       }
@@ -198,7 +199,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
           Container(
             margin: const EdgeInsets.fromLTRB(16, 20, 16, 0),
             padding: const EdgeInsets.fromLTRB(16, 12, 8, 12),
-            decoration: BoxDecoration(color: CxColors.water50, borderRadius: BorderRadius.circular(20), border: Border.all(color: CxColors.water100)),
+            decoration: BoxDecoration(color: CxColors.water50, borderRadius: BorderRadius.circular(16), border: Border.all(color: CxColors.water100)),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Row(children: [
                 const Icon(Icons.alarm_rounded, color: CxColors.water700),
@@ -214,7 +215,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
               ]),
               if (p.reminders.isEmpty)
                 Padding(padding: const EdgeInsets.symmetric(vertical: 8), child: Text('Chưa có lời nhắc. Đặt giờ tưới để điện thoại kêu như báo thức.', style: t.bodyMedium)),
-              for (final r in p.reminders) _ReminderTile(plant: p, reminder: r, onToggle: () => _toggle(p, r), onDelete: () => _deleteReminder(p, r)),
+              for (final r in p.reminders) Material(type: MaterialType.transparency, child: _ReminderTile(plant: p, reminder: r, onToggle: () => _toggle(p, r), onDelete: () => _deleteReminder(p, r))),
             ]),
           ),
         ]),
@@ -350,7 +351,9 @@ class _PhotoViewer extends StatelessWidget {
               tooltip: 'Xóa ảnh khỏi app',
               icon: const Icon(Icons.delete_outline_rounded),
               onPressed: () async {
-                await context.read<AppState>().photos.remove(file);
+                final app = context.read<AppState>();
+                await app.photos.remove(file);
+                app.photosChanged();
                 if (context.mounted) Navigator.pop(context);
               },
             ),

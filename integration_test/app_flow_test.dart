@@ -210,7 +210,7 @@ void main() {
     await waitFor(t, field('Tên gọi *'));
     await t.enterText(field('Tên gọi *'), 'Trầu bà góc phòng khách');
     await t.enterText(field('Vị trí đặt'), 'Phòng khách');
-    await t.tap(find.text('Chọn loài để có ảnh minh họa và gợi ý chăm'));
+    await t.tap(find.text('Chọn loài'));
     await waitFor(t, find.byType(ListTile));
     await t.enterText(find.widgetWithText(TextField, 'Tìm loài: trầu bà, lưỡi hổ…'), 'trau');
     await waitFor(t, find.widgetWithText(ListTile, 'Trầu bà'));
@@ -400,6 +400,9 @@ void main() {
       (find.byTooltip('Gửi'), 'Gửi bình luận'),
     ]);
     await t.tap(find.byTooltip('Gửi'));
+    await settle(t, 2000);
+    // Ảnh bài cao có thể đẩy bình luận ra ngoài vùng đã dựng của danh sách.
+    await t.drag(find.byType(ListView).last, const Offset(0, -900));
     await waitFor(t, find.text('Đẹp quá, cho mình xin cách trộn đất với!'));
     navigatorKey.currentState!.pop();
     await settle(t);
@@ -427,7 +430,7 @@ void main() {
     await t.tap(find.byType(ExplorePlantCard).first);
     await waitFor(t, find.textContaining('#'));
     await shot(t, '21-bai-kham-pha', 'Đọc bài Khám phá', 'Kéo xuống để đọc hết bài.', [
-      (find.byType(SliverAppBar), 'Quay lại danh sách'),
+      (find.byType(BackButton), 'Quay lại danh sách'),
     ]);
     navigatorKey.currentState!.pop();
     await settle(t);

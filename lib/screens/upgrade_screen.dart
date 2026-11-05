@@ -72,6 +72,7 @@ class _UpgradeScreenState extends State<UpgradeScreen> {
                 ),
               Center(
                 child: SegmentedButton<int>(
+                  showSelectedIcon: false,
                   segments: const [ButtonSegment(value: 1, label: Text('Theo tháng')), ButtonSegment(value: 12, label: Text('Theo năm · tặng 2 tháng'))],
                   selected: {_months},
                   onSelectionChanged: (s) => setState(() => _months = s.first),
@@ -110,7 +111,7 @@ class _PlanCard extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: pro ? CxColors.emerald900 : Colors.white,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(16),
         border: pro ? null : Border.all(color: CxColors.stone200),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -241,7 +242,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           Center(
             child: Container(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(24), border: Border.all(color: CxColors.stone200)),
+              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16), border: Border.all(color: CxColors.stone200)),
               child: _p.qrCode == null
                   ? const SizedBox(width: 240, height: 240, child: Center(child: Text('Cổng thanh toán không trả mã QR.\nDùng nút "Mở trang PayOS" bên dưới.', textAlign: TextAlign.center)))
                   : QrImageView(

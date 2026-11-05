@@ -19,6 +19,7 @@ class PlantAvatar extends StatefulWidget {
 
 class _PlantAvatarState extends State<PlantAvatar> {
   File? _cover;
+  int? _version;
 
   @override
   void initState() {
@@ -41,6 +42,9 @@ class _PlantAvatarState extends State<PlantAvatar> {
 
   @override
   Widget build(BuildContext context) {
+    final version = context.select<AppState, int>((a) => a.photoVersion);
+    if (_version != null && _version != version) Future.microtask(_load);
+    _version = version;
     final api = context.read<AppState>().api;
     final url = widget.plant.speciesImageUrl == null ? null : api.mediaUrl(widget.plant.speciesImageUrl!);
     return PlantImage(file: _cover, url: url, size: widget.size, radius: widget.radius);

@@ -68,6 +68,7 @@ class _PlantFormScreenState extends State<PlantFormScreen> {
       } catch (e) {
         if (mounted) showError(context, e);
       }
+      if (_picked.isNotEmpty) app.photosChanged();
       if (mounted) Navigator.pop(context, true);
     } on ApiException catch (e) {
       if (!mounted) return;
