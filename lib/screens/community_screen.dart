@@ -390,7 +390,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
           const SizedBox(height: 24),
           FilledButton(
             onPressed: _busy ? null : _submit,
-            child: _busy ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white)) : const Text('Đăng'),
+            child: _busy ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: CxColors.stone900)) : const Text('Đăng'),
           ),
         ]),
       ),

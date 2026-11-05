@@ -34,6 +34,8 @@ class AppState extends ChangeNotifier {
 
   SessionStatus status = SessionStatus.loading;
   Me? me;
+  /// Gói đang dùng (GET me/plan). null: chưa tải được, avatar hiện như thường.
+  MyPlan? plan;
   List<MyPlant>? plants;
   String? gardenError;
   DateTime? lastSync;
@@ -88,6 +90,7 @@ class AppState extends ChangeNotifier {
     notifyListeners();
     unawaited(syncGarden());
     unawaited(refreshUnread());
+    unawaited(refreshPlan());
     unawaited(_startRealtime());
     unawaited(push.register().catchError((_) {}));
   }
@@ -100,6 +103,17 @@ class AppState extends ChangeNotifier {
         notifyListeners();
       }
     });
+  }
+
+  Future<void> refreshPlan() async {
+    try {
+      final res = MyPlan.fromJson(await api.get('me/plan') as Map<String, dynamic>);
+      if (status != SessionStatus.signedIn) return; // đã đăng xuất trong lúc chờ
+      plan = res;
+      notifyListeners();
+    } catch (_) {
+      // Giữ gói đã biết; chưa biết thì avatar hiện như thường.
+    }
   }
 
   Future<void> refreshMe() async {
@@ -115,16 +129,17 @@ class AppState extends ChangeNotifier {
         await api.post('auth/logout', {'refreshToken': t.refreshToken});
       } catch (_) {}
     }
-    await notifications.sync(const [], enabled: false);
     await _signedOut();
   }
 
   Future<void> _signedOut() async {
     await api.setTokens(null);
+    await notifications.sync(const [], enabled: false);
     await _msgSub?.cancel();
     _msgSub = null;
     await realtime.stop();
     me = null;
+    plan = null;
     plants = null;
     unreadChats = 0;
     status = SessionStatus.signedOut;

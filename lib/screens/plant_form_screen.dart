@@ -197,7 +197,7 @@ class _PlantFormScreenState extends State<PlantFormScreen> {
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
           child: FilledButton(
             onPressed: _busy ? null : _save,
-            child: _busy ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white)) : const Text('Lưu'),
+            child: _busy ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: CxColors.stone900)) : const Text('Lưu'),
           ),
         ),
       ),

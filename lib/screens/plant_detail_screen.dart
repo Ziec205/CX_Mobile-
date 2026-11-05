@@ -108,7 +108,7 @@ class _PlantDetailScreenState extends State<PlantDetailScreen> {
           ]),
           actions: [
             TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Hủy')),
-            FilledButton(style: FilledButton.styleFrom(backgroundColor: CxColors.danger), onPressed: () => Navigator.pop(ctx, true), child: const Text('Xóa')),
+            FilledButton(style: FilledButton.styleFrom(backgroundColor: CxColors.danger, foregroundColor: Colors.white), onPressed: () => Navigator.pop(ctx, true), child: const Text('Xóa')),
           ],
         ),
       ),

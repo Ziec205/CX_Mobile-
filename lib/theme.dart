@@ -2,28 +2,28 @@ import 'package:flutter/material.dart';
 
 /// Bộ màu lấy từ globals.css của web (thang emerald / stone / wood / water).
 class CxColors {
-  static const emerald50 = Color(0xFFE9F3EA);
-  static const emerald100 = Color(0xFFD3E8D6);
-  static const emerald200 = Color(0xFFA9D2B0);
-  static const emerald500 = Color(0xFF2F8249);
-  static const emerald600 = Color(0xFF1F6B3A);
-  static const emerald700 = Color(0xFF19582F); // màu chủ đạo
-  static const emerald800 = Color(0xFF144726);
-  static const emerald900 = Color(0xFF10361E);
+  static const emerald50 = Color(0xFFEEF6E6);
+  static const emerald100 = Color(0xFFC9E8BF);
+  static const emerald200 = Color(0xFFA9D48F);
+  static const emerald500 = Color(0xFF4F8A45);
+  static const emerald600 = Color(0xFF3A6F32);
+  static const emerald700 = Color(0xFF2D5A27); // màu chủ đạo
+  static const emerald800 = Color(0xFF234A1F);
+  static const emerald900 = Color(0xFF1A3717);
 
-  static const stone50 = Color(0xFFEEF2EA); // nền
-  static const stone100 = Color(0xFFE3E9DE);
-  static const stone200 = Color(0xFFD3DCCD);
-  static const stone300 = Color(0xFFBCC8B5);
-  static const stone500 = Color(0xFF66725F);
-  static const stone600 = Color(0xFF4F5A49);
-  static const stone700 = Color(0xFF3B4536);
-  static const stone900 = Color(0xFF14281B);
+  static const stone50 = Color(0xFFF8F7F6); // nền
+  static const stone100 = Color(0xFFEFEDEC);
+  static const stone200 = Color(0xFFD9DED4);
+  static const stone300 = Color(0xFFC2C9BB);
+  static const stone500 = Color(0xFF5F6659);
+  static const stone600 = Color(0xFF42493E);
+  static const stone700 = Color(0xFF42493E);
+  static const stone900 = Color(0xFF1A1C19);
 
-  static const wood100 = Color(0xFFFDF3CF);
-  static const wood200 = Color(0xFFF9E08A);
-  static const wood400 = Color(0xFFF2C230); // điểm nhấn
-  static const wood800 = Color(0xFF5A4000);
+  static const wood100 = Color(0xFFF3F8E1);
+  static const wood200 = Color(0xFFD6EA9D);
+  static const wood400 = Color(0xFFADD44C); // điểm nhấn
+  static const wood800 = Color(0xFF3F5212);
 
   static const water50 = Color(0xFFE8F1F9);
   static const water100 = Color(0xFFCFE2F2);
@@ -35,6 +35,7 @@ class CxColors {
   // Theo Figma trang Khám phá; web dùng cùng giá trị (globals.css).
   static const leaf = Color(0xFFC9E8BF);
   static const leafText = Color(0xFF4F6A49);
+  static const lime = Color(0xFFADD44C);
   static const line = Color(0xFFC2C9BB);
 }
 
@@ -90,10 +91,10 @@ ThemeData buildTheme() {
     useMaterial3: true,
     fontFamily: fontBody,
     colorScheme: scheme,
-    scaffoldBackgroundColor: CxColors.stone50,
+    scaffoldBackgroundColor: Colors.white,
     textTheme: text,
     appBarTheme: AppBarTheme(
-      backgroundColor: CxColors.stone50,
+      backgroundColor: Colors.white,
       foregroundColor: CxColors.stone900,
       elevation: 0,
       scrolledUnderElevation: 0.5,
@@ -104,12 +105,12 @@ ThemeData buildTheme() {
       color: Colors.white,
       elevation: 0,
       margin: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24), side: const BorderSide(color: CxColors.stone100)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16), side: const BorderSide(color: CxColors.line)),
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
-        backgroundColor: CxColors.emerald700,
-        foregroundColor: Colors.white,
+        backgroundColor: CxColors.lime,
+        foregroundColor: CxColors.stone900,
         minimumSize: const Size(52, 52),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
         shape: shape,
@@ -128,11 +129,11 @@ ThemeData buildTheme() {
     textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: CxColors.emerald700, minimumSize: const Size(44, 44))),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: Colors.white,
+      fillColor: CxColors.stone50,
       contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: CxColors.stone300)),
-      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: CxColors.stone300)),
-      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: const BorderSide(color: CxColors.emerald600, width: 2)),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(28), borderSide: const BorderSide(color: CxColors.stone300)),
+      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(28), borderSide: const BorderSide(color: CxColors.stone300)),
+      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(28), borderSide: const BorderSide(color: CxColors.emerald600, width: 2)),
     ),
     navigationBarTheme: NavigationBarThemeData(
       backgroundColor: Colors.white,

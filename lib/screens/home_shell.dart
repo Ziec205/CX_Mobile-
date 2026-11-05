@@ -43,6 +43,7 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
       final app = context.read<AppState>();
       app.syncGarden();
       app.refreshUnread();
+      app.refreshPlan();
       app.realtime.start();
     }
   }

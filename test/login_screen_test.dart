@@ -15,10 +15,10 @@ void main() {
     addTearDown(tester.view.reset);
     final app = AppState(api: ApiClient(client: MockClient((_) async => http.Response('', 500)), store: MemoryTokenStore(), baseUrl: 'https://api.test'));
     await tester.pumpWidget(ChangeNotifierProvider.value(value: app, child: const MaterialApp(home: LoginScreen())));
-    expect(find.text('Chào mừng trở lại 👋'), findsOneWidget);
+    expect(find.widgetWithText(FilledButton, 'Đăng nhập'), findsOneWidget);
 
-    await tester.ensureVisible(find.text('Chưa có tài khoản? Đăng ký'));
-    await tester.tap(find.text('Chưa có tài khoản? Đăng ký'));
+    await tester.ensureVisible(find.text('Đăng ký ngay'));
+    await tester.tap(find.text('Đăng ký ngay'));
     await tester.pump();
     expect(find.text('Nhập lại mật khẩu'), findsOneWidget);
 

@@ -162,16 +162,16 @@ void main() {
       (btn('Bắt đầu thôi'), 'Vào đăng nhập'),
     ]);
     await t.tap(btn('Bắt đầu thôi'));
-    await waitFor(t, find.text('Chào mừng trở lại 👋'));
+    await waitFor(t, find.widgetWithText(FilledButton, 'Đăng nhập'));
 
     // ---------- Đăng nhập / đăng ký ----------
     await shot(t, '01-dang-nhap', 'Đăng nhập', 'Dùng chung tài khoản với web Chạm Xanh (tên đăng nhập + mật khẩu).', [
       (field('Tên đăng nhập'), 'Nhập tên đăng nhập'),
       (field('Mật khẩu'), 'Nhập mật khẩu (bấm biểu tượng mắt để hiện/ẩn)'),
       (btn('Đăng nhập'), 'Đăng nhập vào app'),
-      (find.text('Chưa có tài khoản? Đăng ký'), 'Chuyển sang tạo tài khoản mới'),
+      (find.text('Đăng ký ngay'), 'Chuyển sang tạo tài khoản mới'),
     ]);
-    await t.tap(find.text('Chưa có tài khoản? Đăng ký'));
+    await t.tap(find.text('Đăng ký ngay'));
     await settle(t);
     final user = 'vuon.${DateTime.now().millisecondsSinceEpoch % 1000000}';
     const pass = 'matkhau123';

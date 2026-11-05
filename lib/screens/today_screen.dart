@@ -204,6 +204,7 @@ class _TaskCardState extends State<TaskCard> {
                 : FilledButton(
                     style: FilledButton.styleFrom(
                       backgroundColor: CxColors.water500,
+                      foregroundColor: Colors.white,
                       minimumSize: const Size(96, 48),
                       padding: const EdgeInsets.symmetric(horizontal: 14),
                     ),
@@ -214,7 +215,7 @@ class _TaskCardState extends State<TaskCard> {
                             await completeCare(context, x.plant, x.reminder);
                             if (mounted) setState(() => _busy = false);
                           },
-                    child: _busy ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white)) : Text(doneLabel),
+                    child: _busy ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2.5, color: CxColors.stone900)) : Text(doneLabel),
                   ),
           ]),
         ),

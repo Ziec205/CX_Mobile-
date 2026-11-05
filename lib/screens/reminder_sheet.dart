@@ -154,9 +154,9 @@ class _ReminderSheetState extends State<_ReminderSheet> {
           TextField(controller: _note, maxLength: 300, decoration: const InputDecoration(labelText: 'Ghi chú (vd: tưới 200ml, tưới gốc)')),
           const SizedBox(height: 8),
           FilledButton(
-            style: FilledButton.styleFrom(backgroundColor: CxColors.water500),
+            style: FilledButton.styleFrom(backgroundColor: CxColors.water500, foregroundColor: Colors.white),
             onPressed: _busy ? null : _save,
-            child: _busy ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white)) : const Text('Lưu lời nhắc'),
+            child: _busy ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: CxColors.stone900)) : const Text('Lưu lời nhắc'),
           ),
         ]),
       ),

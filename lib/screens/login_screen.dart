@@ -54,6 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final t = Theme.of(context).textTheme;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -63,45 +64,16 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Form(
                 key: _form,
                 child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                  Container(
-                    height: 150,
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(colors: [CxColors.emerald700, CxColors.emerald900], begin: Alignment.topLeft, end: Alignment.bottomRight),
-                      borderRadius: BorderRadius.circular(28),
-                    ),
-                    child: Stack(children: [
-                      const Positioned(right: -18, bottom: -24, child: Icon(Icons.eco_rounded, size: 150, color: Color(0x2619582F))),
-                      const Positioned(right: 30, top: 18, child: Icon(Icons.local_florist_rounded, size: 44, color: Color(0x55F2C230))),
-                      Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.end, children: [
-                          Container(
-                            width: 46,
-                            height: 46,
-                            padding: const EdgeInsets.all(7),
-                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(14)),
-                            child: Image.asset('assets/images/logo.png', semanticLabel: 'Logo Chạm Xanh'),
-                          ),
-                          const SizedBox(height: 10),
-                          Text('Chạm Xanh', style: t.headlineMedium?.copyWith(color: Colors.white)),
-                        ]),
-                      ),
-                    ]),
-                  ),
-                  const SizedBox(height: 28),
-                  Text(_register ? 'Tạo tài khoản miễn phí' : 'Chào mừng trở lại 👋', style: t.headlineLarge),
-                  const SizedBox(height: 8),
-                  Text(
-                    _register ? 'Chỉ cần tên đăng nhập và mật khẩu. Lưu vườn, đặt nhắc tưới và trò chuyện cùng cộng đồng.' : 'Vườn của bạn đang chờ. Tài khoản dùng chung với web Chạm Xanh.',
-                    style: t.bodyLarge?.copyWith(color: CxColors.stone600),
-                  ),
+                  Center(child: Image.asset('assets/images/logo.png', height: 56, semanticLabel: 'Logo Chạm Xanh')),
+                  const SizedBox(height: 20),
+                  Text(_register ? 'Đăng ký' : 'Đăng nhập', style: t.headlineMedium, textAlign: TextAlign.center),
                   const SizedBox(height: 28),
                   TextFormField(
                     controller: _user,
                     autofillHints: const [AutofillHints.username],
                     textInputAction: TextInputAction.next,
                     autocorrect: false,
-                    decoration: const InputDecoration(labelText: 'Tên đăng nhập', prefixIcon: Icon(Icons.person_outline_rounded)),
+                    decoration: const InputDecoration(hintText: 'Tên đăng nhập', prefixIcon: Icon(Icons.person_outline_rounded)),
                     validator: (v) {
                       final s = (v ?? '').trim().toLowerCase();
                       if (s.isEmpty) return 'Nhập tên đăng nhập';
@@ -117,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     textInputAction: _register ? TextInputAction.next : TextInputAction.done,
                     onFieldSubmitted: (_) => _register ? null : _submit(),
                     decoration: InputDecoration(
-                      labelText: 'Mật khẩu',
+                      hintText: 'Mật khẩu',
                       prefixIcon: const Icon(Icons.lock_outline_rounded),
                       suffixIcon: IconButton(
                         tooltip: _show ? 'Ẩn mật khẩu' : 'Hiện mật khẩu',
@@ -134,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       obscureText: !_show,
                       textInputAction: TextInputAction.done,
                       onFieldSubmitted: (_) => _submit(),
-                      decoration: const InputDecoration(labelText: 'Nhập lại mật khẩu', prefixIcon: Icon(Icons.lock_reset_rounded)),
+                      decoration: const InputDecoration(hintText: 'Nhập lại mật khẩu', prefixIcon: Icon(Icons.lock_reset_rounded)),
                       validator: (v) => v != _pass.text ? 'Mật khẩu nhập lại chưa khớp' : null,
                     ),
                   ],
@@ -150,17 +122,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   FilledButton(
                     onPressed: _busy ? null : _submit,
                     child: _busy
-                        ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white))
+                        ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: CxColors.stone900))
                         : Text(_register ? 'Tạo tài khoản' : 'Đăng nhập'),
                   ),
                   const SizedBox(height: 12),
-                  TextButton(
-                    onPressed: _busy ? null : () => setState(() {
-                              _register = !_register;
-                              _error = null;
-                            }),
-                    child: Text(_register ? 'Đã có tài khoản? Đăng nhập' : 'Chưa có tài khoản? Đăng ký'),
-                  ),
+                  Wrap(alignment: WrapAlignment.center, crossAxisAlignment: WrapCrossAlignment.center, children: [
+                    Text(_register ? 'Bạn đã có tài khoản?' : 'Bạn chưa có tài khoản?', style: t.bodyMedium),
+                    TextButton(
+                      onPressed: _busy ? null : () => setState(() {
+                                _register = !_register;
+                                _error = null;
+                              }),
+                      child: Text(_register ? 'Đăng nhập ngay' : 'Đăng ký ngay', style: const TextStyle(fontWeight: FontWeight.w700)),
+                    ),
+                  ]),
                   if (_busy) ...[
                     const SizedBox(height: 8),
                     Text('Lần đầu máy chủ có thể mất vài chục giây để khởi động…', style: t.bodySmall, textAlign: TextAlign.center),

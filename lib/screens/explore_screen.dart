@@ -313,7 +313,7 @@ class ArticleScreen extends StatelessWidget {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         stops: [0, 0.25, 0.65, 1],
-                        colors: [Color(0x66000000), Color(0x00000000), Color(0x00EEF2EA), CxColors.stone50],
+                        colors: [Color(0x66000000), Color(0x00000000), Color(0x00FFFFFF), Colors.white],
                       ),
                     ),
                   ),
